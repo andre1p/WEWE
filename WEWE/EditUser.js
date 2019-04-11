@@ -37,7 +37,6 @@ export default class EditUser extends Component {
         <TextInput style={styles.inputBox}
           onChangeText={this.onChange}
           onSubmitEditing={this.submit} />
-        <Text style={styles.instructions}>Current text "{this.state.text}"</Text>
       </View>
     );
   }
@@ -51,7 +50,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   inputBox: {
-    backgroundColor: "#222222",
+    borderColor: '#222222',
+    backgroundColor: "#f2f2f2",
+    borderRadius: 60,
+    padding: 5,
   },
   welcome: {
     fontSize: 20,
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
-    color: '#333333',
+    color: '#111111',
     marginBottom: 5,
   },
 });

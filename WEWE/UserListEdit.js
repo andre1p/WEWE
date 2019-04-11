@@ -22,7 +22,7 @@ export default class UserListEdit extends Component {
     users: initialUsers
   }
 
-  renderItem = ({ item }) => (
+  renderItem = ({ item, index }) => (
     <TouchableHighlight underlayColor='#fff' onPress={() => this.clickUser(item.name, index)}>
       <View style={styles.user}>
         <Image style={styles.userPhoto} source={item.photo} />
