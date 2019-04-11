@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, TextInput } from 'react-native';
 
 
 export default class App extends Component {
@@ -21,7 +21,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
+        <TextInput style={styles.inputBox}
           onChangeText={this.onChange}
           onSubmitEditing={this.submit} />
         <Text style={styles.instructions}>Current text "{this.state.text}"</Text>
@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  inputBox: {
+    backgroundColor: "#222222",
   },
   welcome: {
     fontSize: 20,
