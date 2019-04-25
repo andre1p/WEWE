@@ -13,9 +13,10 @@ import EditUser from './EditUser.js';
 import login from './login.js';
 
 const navigator = createStackNavigator({
-    'login': login,
+    'login': login, 
     'edituser': EditUser,
-})
+    
+}, {headerMode: 'none'})
 
 const app = createAppContainer(navigator);
 

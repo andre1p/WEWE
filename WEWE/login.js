@@ -15,7 +15,7 @@ export default class login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.logo} source={require('./assets/recipe-photo.jpg')} />
+        <Image style={styles.logo} source={require('./assets/logo.png')} />
         <Text style={styles.buttonL}>Log In</Text>
         <Text style={styles.buttonR}>Log Up</Text>
       </View>
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
   logo:{
     width: 160,
     height: 160,
-    borderRadius: 160,
+    margin: 10,
   },
 });
