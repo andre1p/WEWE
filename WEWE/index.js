@@ -15,6 +15,7 @@ import login from './login.js';
 const navigator = createStackNavigator({
     'login': login, 
     'edituser': EditUser,
+    'userlistedit': UserListEdit,
     
 }, {headerMode: 'none'})
 
