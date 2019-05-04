@@ -3,15 +3,19 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
+import Clarifai from 'clarifai';
 
 const imagePickerOptions = {
   title: 'Take a Picture'
 }
 
+const app = new Clariafai.App({
+apiKey: '1e17c96d33274a809962560bda316e3e',
+});
+
 export default class login extends Component {
   state = {
     imageSource: null,
-    name: "Holi holi"
   }
 
   takePicture = () => {
@@ -25,70 +29,20 @@ export default class login extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = { uri: response.uri };
-        this.setState({ imageSource: source });
-        this.celebremThis();
-        //const { navigation } = this.props;
-        //navigation.navigate('userlistedit');
+       
+        const base64data = response.data; // <-- comprovar que això va bé (les dades en base64 són un string amb lletres i números).
+        app.models.predict(Clarifai.CELEBRITY_MODEL, { base64: base64data })
+        //                          ^^^^^^- Canviar el model aquí!!
+          .then(res => {
+            // 5. Rebem els resultats de la crida a la API
+            Alert.alert('success', JSON.stringify(res.data.concepts));
+          })
+          .catch(error => {
+            // 6. Gestió d'errors.
+            Alert.alert('error', JSON.stringify(error));
+          })
       }
     });
-  }
-  celebrem =()=>{
-    var CV_URL = 'https://api.clarifai.com/v2/models/e466caa0619f444ab97497640cefc4dc/outputs';
-    alert(CV_URL);
-  }
-  celebremThis = () => {
-
-    alert("holi");
-
-    var CV_URL = 'https://api.clarifai.com/v2/models/e466caa0619f444ab97497640cefc4dc/outputs';
-
-
-    uploadFiles();
-
-
-    function uploadFiles(event) {
-      event.preventDefault();
-      var file = this.state.imageSource;
-      var reader = new FileReader();
-      reader.onloadend = processFile;
-      reader.readAsDataURL(file);
-    }
-
-    function processFile(event) {
-      var content = event.target.result;
-      sendFileToCloudVision(content.replace('data:image/jpeg;base64,', ''));
-    }
-
-    function sendFileToCloudVision(content) {
-      var request = {
-        inputs: [
-          {
-            data: {
-              image: {
-                base64: content
-              }
-            }
-          }
-        ]
-      };
-
-      $('#results').text('Loading...');
-      $.post({
-        url: CV_URL,
-        data: JSON.stringify(request),
-        contentType: 'application/json',
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader("Authorization", "Key " + window.apiKey);
-
-        }
-      }).done(GuardaVector);
-    }
-
-    function GuardaVector(data) {
-      var content = data.outputs[0].data.regions[0].data.concepts[0].name;
-      console.log(content);
-    }
   }
 
   renderItem = ({ item }) => (
@@ -104,7 +58,6 @@ export default class login extends Component {
         <Image source={this.state.imageSource} style={styles.image} />
         <Button title="Take a Picture" onPress={this.takePicture} />
         <Image style={styles.logo} source={require('./assets/logo.png')} />
-        <Text style={styles.buttonL}>{this.state.name}</Text>
         <Text style={styles.buttonR}>Series</Text>
       </View>
     );
