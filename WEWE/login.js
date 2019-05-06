@@ -3,22 +3,24 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
-import Clarifai from 'clarifai';
+//import Clarifai from 'clarifai';
+
+//const Clarifai = require('clarifai');
 
 const imagePickerOptions = {
   title: 'Take a Picture'
 }
 
-const app = new Clariafai.App({
-apiKey: '1e17c96d33274a809962560bda316e3e',
-});
+//const app = new Clariafai.App({
+//  apiKey: '1e17c96d33274a809962560bda316e3e',
+//});
 
 export default class login extends Component {
   state = {
     imageSource: null,
   }
 
-  takePicture = () => {
+ /* takePicture = () => {
     ImagePicker.showImagePicker(imagePickerOptions, (response) => {
       console.log('Response = ', response);
 
@@ -29,10 +31,10 @@ export default class login extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-       
+
         const base64data = response.data; // <-- comprovar que això va bé (les dades en base64 són un string amb lletres i números).
         app.models.predict(Clarifai.CELEBRITY_MODEL, { base64: base64data })
-        //                          ^^^^^^- Canviar el model aquí!!
+          //                          ^^^^^^- Canviar el model aquí!!
           .then(res => {
             // 5. Rebem els resultats de la crida a la API
             Alert.alert('success', JSON.stringify(res.data.concepts));
@@ -50,15 +52,31 @@ export default class login extends Component {
       <Image style={styles.userPhoto} source={item.photo} />
       <Text style={styles.userName}>{item.name}</Text>
     </View>
-  )
+
+    <Image source={this.state.imageSource} style={styles.image} />
+        <Button title="Take a Picture" onPress={this.takePicture} />
+  )*/
+  
+  MoviesPage =()=>{
+    const { navigation } = this.props;
+    navigation.navigate('movies');
+  }
+  SeriesPage =()=>{
+    const { navigation } = this.props;
+    navigation.navigate('series');
+  }
+  SearchPage =()=>{
+    const { navigation } = this.props;
+    navigation.navigate('search');
+  }
 
   render() {
     return (
       <View style={styles.container}>
-        <Image source={this.state.imageSource} style={styles.image} />
-        <Button title="Take a Picture" onPress={this.takePicture} />
         <Image style={styles.logo} source={require('./assets/logo.png')} />
-        <Text style={styles.buttonR}>Series</Text>
+        <Text style={styles.buttonR} onPress={this.SeriesPage}>Series</Text>
+        <Text style={styles.buttonL} onPress={this.MoviesPage}>Movies</Text>
+        <Text style={styles.buttonS} onPress={this.SearchPage}>Search</Text>
       </View>
     );
   }
@@ -86,7 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 15,
     margin: 5,
-    backgroundColor: '#21f1f1',
+    backgroundColor: '#f711dc',
     borderRadius: 20,
     width: 120,
     textAlign: 'center',
@@ -100,7 +118,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 15,
     margin: 5,
-    backgroundColor: '#f1f121',
+    backgroundColor: '#0bf4c7',
+    borderRadius: 20,
+    width: 120,
+    textAlign: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  buttonS: {
+    fontSize: 16,
+    padding: 15,
+    margin: 5,
+    backgroundColor: 'rgba(250,250,250, 1.0)',
     borderRadius: 20,
     width: 120,
     textAlign: 'center',
