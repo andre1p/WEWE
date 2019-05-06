@@ -19,6 +19,8 @@ const imagePickerOptions = {
 export default class search extends Component {
     state = {
         imageSource: null,
+        celebrityName: 'Search for a Celebrity',
+        takePic: 'Take a picture',
     }
 
     takePicture = () => {
@@ -32,36 +34,21 @@ export default class search extends Component {
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
-                /*
-                const base64data = response.data; // <-- comprovar que això va bé (les dades en base64 són un string amb lletres i números).
-                app.models.predict(Clarifai.CELEBRITY_MODEL, { base64: base64data })
-                  //                          ^^^^^^- Canviar el model aquí!!
-                  .then(res => {
-                    // 5. Rebem els resultats de la crida a la API
-                    Alert.alert('success', JSON.stringify(res.data.concepts));
-                  })
-                  .catch(error => {
-                    // 6. Gestió d'errors.
-                    Alert.alert('error', JSON.stringify(error));
-                  })*/
                 const source = { uri: response.uri };
                 this.setState({ imageSource: source });
+                this.setState({celebrityName: "Is this your celebrity? " + " Brandon Stark"});
+                this.setState({takePic: "Take again"});
             }
         });
     }
 
-    renderItem = ({ item }) => (
-        <View style={styles.user}>
-            <Image style={styles.userPhoto} source={item.photo} />
-            <Text style={styles.userName}>{item.name}</Text>
-        </View>)
-
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Search for a Celebrity</Text>
+                <Text style={styles.title}>{this.state.celebrityName}</Text>
                 <Image source={this.state.imageSource} style={styles.image} />
-                <Text style={styles.buttonS} onPress={this.takePicture}>Take a picture</Text>
+                <Text style={styles.buttonS} onPress={this.takePicture}>{this.state.takePic}</Text>
+                <Text style={styles.buttonC} >Continue</Text>
             </View>
         );
     }
@@ -104,5 +91,20 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 2,
+      },
+    buttonC: {
+        fontSize: 16,
+        padding: 15,
+        margin: 5,
+        backgroundColor: 'rgba(100,250,250, 1.0)',
+        borderRadius: 20,
+        width: 150,
+        textAlign: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 2,
+        opacity: 0,
       },
 });
