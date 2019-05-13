@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
-//import Clarifai from 'clarifai';
+import Clarifai from 'clarifai'
 
 //const Clarifai = require('clarifai');
 
@@ -12,15 +12,17 @@ const imagePickerOptions = {
     title: 'Take a Picture'
 }
 
-//const app = new Clariafai.App({
-//  apiKey: '1e17c96d33274a809962560bda316e3e',
-//});
+const CELEBRITY_MODEL = 'e466caa0619f444ab97497640cefc4dc'
+const app = new Clarifai.App({
+apiKey: '1e17c96d33274a809962560bda316e3e',
+});
 
 export default class search extends Component {
     state = {
         imageSource: null,
         celebrityName: 'Search for a Celebrity',
         takePic: 'Take a picture',
+        band: 1,
     }
 
     takePicture = () => {
@@ -34,21 +36,39 @@ export default class search extends Component {
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
-                const source = { uri: response.uri };
-                this.setState({ imageSource: source });
-                this.setState({celebrityName: "Is this your celebrity? " + " Brandon Stark"});
-                this.setState({takePic: "Take again"});
+                const source = {uri: response.uri};
+                const base64data = response.data;
+                this.setState({imageSource: source});
+                app.models.predict(CELEBRITY_MODEL, { base64: base64data })
+                
+                  .then(response => {
+                   var actor = response.outputs[0].data.regions[0].data.concepts[0].name;
+                    console.log('success', JSON.stringify(response.outputs[0].data.regions[0].data.concepts[0].name));
+                    this.setState({celebrityName: actor});
+                    this.setState({takePic:'Take again'});
+                    this.setState({band:2});
+                    
+                  })
+                  .catch(error => {
+                    this.setState({band:1});
+                    this.setState({celebrityName: 'Not found or invalid image type'});
+                    
+                  })
             }
         });
     }
 
     render() {
+        let button;
+        if(this.state.band == 2){
+       button = <Button title="Continue" /> }
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>{this.state.celebrityName}</Text>
                 <Image source={this.state.imageSource} style={styles.image} />
                 <Text style={styles.buttonS} onPress={this.takePicture}>{this.state.takePic}</Text>
                 <Text style={styles.buttonC} >Continue</Text>
+                {button}
             </View>
         );
     }
@@ -58,6 +78,8 @@ const styles = StyleSheet.create({
     title:{
         margin:20,
         fontSize: 18,
+        textTransform: 'uppercase',
+        
     },
     container: {
         flex: 1,
