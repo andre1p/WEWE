@@ -19,43 +19,6 @@ export default class login extends Component {
   state = {
     imageSource: null,
   }
-
- /* takePicture = () => {
-    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-
-        const base64data = response.data; // <-- comprovar que això va bé (les dades en base64 són un string amb lletres i números).
-        app.models.predict(Clarifai.CELEBRITY_MODEL, { base64: base64data })
-          //                          ^^^^^^- Canviar el model aquí!!
-          .then(res => {
-            // 5. Rebem els resultats de la crida a la API
-            Alert.alert('success', JSON.stringify(res.data.concepts));
-          })
-          .catch(error => {
-            // 6. Gestió d'errors.
-            Alert.alert('error', JSON.stringify(error));
-          })
-      }
-    });
-  }
-
-  renderItem = ({ item }) => (
-    <View style={styles.user}>
-      <Image style={styles.userPhoto} source={item.photo} />
-      <Text style={styles.userName}>{item.name}</Text>
-    </View>
-
-    <Image source={this.state.imageSource} style={styles.image} />
-        <Button title="Take a Picture" onPress={this.takePicture} />
-  )*/
   
   MoviesPage =()=>{
     const { navigation } = this.props;
