@@ -32,7 +32,7 @@ export default class login extends Component {
     const { navigation } = this.props;
     navigation.navigate('search');
   }
-
+  
   render() {
     return (
       <View style={styles.container}>
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   buttonL: {
+    color: 'white',
     fontSize: 16,
     padding: 15,
     margin: 5,
@@ -78,10 +79,11 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonR: {
+    color: 'white',
     fontSize: 16,
     padding: 15,
     margin: 5,
-    backgroundColor: '#0bf4c7',
+    backgroundColor: '#0BE9C7',
     borderRadius: 20,
     width: 120,
     textAlign: 'center',
