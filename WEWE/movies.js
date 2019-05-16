@@ -9,6 +9,7 @@ export default class movies extends Component {
   state = {
     imageSource: null,
     text: "Search",
+    styleStar: 'styles.nolikeStar',
   }
   LoginPage =()=>{
     const { navigation } = this.props;
@@ -21,7 +22,37 @@ export default class movies extends Component {
     const { navigation } = this.props;
     navigation.navigate('search');
   }
+  changeFav = () => {
+    if(this.state.styleStar == 'styles.nolikeStar'){
+      this.setState({styleStar: 'styles.likeStar'});
+      alert(this.state.styleStar);
+    } else {
+      this.setState({styleStar: 'styles.nolikeStar'});
+      alert(this.state.styleStar);
+    }
+  }
+  displayRows = () => (
+    <View style={styles.rows}>
+      {this.displayCartels()}
+      {this.displayCartels()}
+      {this.displayCartels()}
+    </View>
+  );
+  displayCartels = () => (
+      <View style={styles.cartel}>
+        <ImageBackground source={require('./assets/alita.jpg')} style={styles.bgImage}>
+          <View><Text style={styles.title}>Movie 1</Text></View>
+          <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
+          <View style={styles.like}><Text style={styles.likeStar} onPress={this.changeFav}>*</Text></View>
+        </ImageBackground>
+      </View>
+  );
+
   render() {
+    let rendermas;
+    if(this.state.styleStar == 'styles.nolikeStar'){
+      rendermas =  this.displayRows();
+    }
     return (
       <View style={styles.container}>
         <View style={styles.navBar}>
@@ -38,85 +69,17 @@ export default class movies extends Component {
         </View>
         <ScrollView>
           <View style={styles.content}>
+            {this.displayRows()}
             <View style={styles.rows}>
               <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user.png')} style={styles.bgImage}>
+                <ImageBackground source={require('./assets/endgame.jpg')} style={styles.bgImage}>
                   <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
+                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
                   <View style={styles.like}><Text style={styles.likeStar}>*</Text></View>
                 </ImageBackground>
               </View>
               <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user00.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user01.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.likeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-            </View>
-            <View style={styles.rows}>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user02.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user03.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user04.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-            </View>
-            <View style={styles.rows}>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user05.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user06.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user07.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-            </View>
-            <View style={styles.rows}>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user00.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
-                </ImageBackground>
-              </View>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/user01.jpg')} style={styles.bgImage}>
+                <ImageBackground source={require('./assets/endgame.jpg')} style={styles.bgImage}>
                   <View><Text style={styles.title}>Movie 1</Text></View>
                   <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
                   <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
@@ -125,8 +88,9 @@ export default class movies extends Component {
               <View style={styles.cartel}>
                 <View><Text style={{textAlign: 'center', }}>+</Text></View>
               </View>
+              
             </View>
-            
+            {rendermas}
           </View>
         </ScrollView>
       </View>
