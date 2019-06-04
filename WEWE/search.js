@@ -27,6 +27,10 @@ export default class search extends Component {
         const { navigation } = this.props;
         navigation.navigate('login');
     }
+    CelRes = () => {
+        const { navigation } = this.props;
+        navigation.navigate('celRes');
+    }
     onChange = (text) => {
         this.setState({ text: text });
     }
@@ -80,7 +84,7 @@ export default class search extends Component {
     render() {
         let button;
         if (this.state.band == 2) {
-            button = <Text style={styles.buttonC} onPress={this.LoginPage}> Continue </Text>
+            button = <Text style={styles.buttonC} onPress={this.CelRes}> Continue </Text>
         }
         return (
             <View style={styles.container}>
