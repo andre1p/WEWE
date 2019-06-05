@@ -6,21 +6,6 @@ import { whileStatement } from '@babel/types';
 const titulo = {
     title: null
 }
-const cartel1 = {
-    poster1: null,
-    titulo1: null,
-    name1: null,
-}
-const cartel2 = {
-    poster2: null,
-    titulo2: null,
-    name2: null,
-}
-const cartel3 = {
-    poster3: null,
-    titulo3: null,
-    name3: null,
-}
 
 export default class celRes extends Component {
     
@@ -42,8 +27,7 @@ export default class celRes extends Component {
                 this.setState({
                     movies: json.results[0].known_for,
                 });
-                console.log(this.state.movies);
-                console.log(this.state.actor);
+
             });
     }
     submit = () => {
@@ -60,63 +44,26 @@ export default class celRes extends Component {
             return(<Text style={styles.titleSerie}>{titulo.title}</Text>);
         };                   
     }
-
-    goInfo = (index) => {
+    goInfo = (index, movie) =>{
         let { titulaso } = 'null';
-        let { name } = 'null';
         let { poster } = 'null';
-        if(index = 0){
-            titulaso = cartel1.titulo1;
-            name = cartel1.name1;
-            poster = cartel1.poster1;
-            if(cartel1.titulo1 == null){
-                const { navigation } = this.props;
-                navigation.navigate('cartelInfo', {titulaso}, {poster});
-            } else if (cartel1.name1 == null){
-                const { navigation } = this.props;
-                navigation.navigate('cartelInfo', {name}, {poster});
-            }
-        } else if(index = 1){
-            titulaso = cartel2.titulo2;
-            name = cartel2.name2;
-            poster = cartel2.poster2;
-            if(cartel2.titulo2 == null){
-                const { navigation } = this.props;
-                navigation.navigate('cartelInfo', {titulaso}, {poster});
-            } else if (cartel2.name2 == null){
-                const { navigation } = this.props;
-                navigation.navigate('cartelInfo', {name}, {poster});
-            }
-        } else if(index = 2){
-            titulaso = cartel3.titulo3;
-            name = cartel3.name3;
-            poster = cartel3.poster3;
-            if(cartel3.titulo3 == null){
-                const { navigation } = this.props;
-                navigation.navigate('cartelInfo', {titulaso}, {poster});
-            } else if (cartel3.name3 == null){
-                const { navigation } = this.props;
-                navigation.navigate('cartelInfo', {name}, {poster});
-            }
-        }
-    }
+        let { peli } = false;
+        let { id } = 0;
 
-    sendIndex = (index, movie) => {
-        if(index == 0){
-            cartel1.poster1 = movie.poster_path;
-            cartel1.titulo1 = movie.original_title;
-            cartel1.name1 = movie.original_name;
-            alert(cartel1.poster1);
-            alert(cartel1.titulo1);
-            alert(cartel1.name1);
-        } else if (index == 1){
-            cartel2.poster2 = movie.poster_path;
-            cartel2.titulo2 = movie.original_title;
-            cartel2.name2 = movie.original_name;
-        } else if ( index == 2){
-            cartel3.poster3 = movie.poster_path;
-            cartel3.titulo3 = movie.original_title;
-            cartel3.name3 = movie.original_name;
+        const { navigation } = this.props;
+        
+        if(movie.original_title == null){  
+            titulaso = movie.original_name;
+            poster = movie.backdrop_path;
+            peli = false;
+            id = movie.id;
+            navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
+        } else {
+            titulaso = movie.original_title;
+            poster = movie.backdrop_path;
+            peli = true;
+            id = movie.id;
+            navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
         }
     }
 
@@ -140,12 +87,11 @@ export default class celRes extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.knownFor}>
-                    <Text>Known For</Text>
+                    <Text>Known for...</Text>
                 </View>
                 <View style={styles.rows}>
                     {movies.map((movie, index) =>
-                        <TouchableOpacity key={index} style={styles.cartel} onPress={()=> this.goInfo(index)}>
-                                {this.sendIndex(index, movie)}
+                        <TouchableOpacity key={index} style={styles.cartel} onPress={()=> this.goInfo(index, movie)}>
                                 <ImageBackground  source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
                                     {this.movieList(movie)}
                                     
@@ -199,7 +145,6 @@ const styles = StyleSheet.create({
     bgImage: {
         height: '100%',
         width: '100%',
-        borderRadius: 10,
         flexDirection: 'column',
         shadowColor: "#000",
         shadowOffset: {

@@ -37,6 +37,11 @@ nextPage = () =>{
   this.refs._scrollView.scrollTo(0); 
   this.componentDidMount();
 }
+prevPage = () =>{
+  page.number--;
+  this.refs._scrollView.scrollTo(0); 
+  this.componentDidMount();
+}
   LoginPage =()=>{
     const { navigation } = this.props;
     navigation.navigate('login');
@@ -62,12 +67,43 @@ nextPage = () =>{
     alert("hi");
   }
 
+  displayCargaMas = () =>{
+    return (
+    <View style={styles.rows}>
+      <TouchableOpacity style={styles.cartel} onPress={()=>this.nextPage()}>
+        <Text style={{textAlign: 'center', }}>Next</Text> 
+        <Text style={{textAlign: 'center', }}>{page.number + 1}</Text>
+      </TouchableOpacity>
+    </View>);
+  }
+
+  displayCargaMasMenos = () => {
+    return (
+    <View style={styles.rows}>
+      <TouchableOpacity style={styles.cargarMas} onPress={()=>this.prevPage()}>
+        <Text style={{textAlign: 'center', }}>Prev</Text> 
+        <Text style={{textAlign: 'center', }}>{page.number - 1}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.cargarMas} onPress={()=>this.nextPage()}>
+        <Text style={{textAlign: 'center', }}>Next</Text> 
+        <Text style={{textAlign: 'center', }}>{page.number + 1}</Text>
+      </TouchableOpacity>
+    </View>
+    );
+  }
+
   render() {
     
     let { movies } = this.state;
     let imglink = ["https://image.tmdb.org/t/p/original"];
     let movielink = ["http://localhost:3000/minfo"];
-    
+    let changePage;
+    if(page.number == 1){
+      changePage = this.displayCargaMas();
+    } else {
+      changePage = this.displayCargaMasMenos();
+    }
+
     /*let rendermas;
     if(this.state.styleStar == 'styles.nolikeStar'){
       rendermas =  this.displayRows();
@@ -89,19 +125,17 @@ nextPage = () =>{
         <ScrollView ref='_scrollView'>
           <View style={styles.rows}>
           {movies.map((movie, index) =>
-           <View style={styles.cartel}>
-           <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
-             <View><Text style={styles.title}>{movie.original_title}</Text></View>
-             <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-             <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={()=>this.changeFav}></Image></View>
-           </ImageBackground>
-         </View>
+            <View style={styles.cartel} key={index}>
+              <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
+                <View><Text style={styles.title}>{movie.original_title}</Text></View>
+                <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
+                <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={()=>this.changeFav}></Image></View>
+              </ImageBackground>
+            </View>
                     )}
-             <View style={styles.cartel}>
-             <TouchableOpacity style={styles.cartel} onPress={()=>this.nextPage()}>
-                  <View><Text style={{textAlign: 'center', }}>+</Text></View>
-              </TouchableOpacity>
-         </View>
+              
+              {changePage}
+            
           </View>
         </ScrollView>
       </View>
@@ -113,6 +147,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
+  },
+  cargarMas: {
+    color: 'black',
+    backgroundColor: 'white',
+    margin: 5,
+    aspectRatio: 0.32,
+    height: 165,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    zIndex: 0,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 0,
   },
   conent: {
     flexDirection: 'column',
@@ -126,7 +179,6 @@ const styles = StyleSheet.create({
   bgImage: {
     height: '100%',
     width: '100%',
-    borderRadius: 10,
     flexDirection: 'column',
     shadowColor: "#000",
     shadowOffset: {
