@@ -38,12 +38,17 @@ export default class movies extends Component {
       {this.displayCartels()}
     </View>
   );
+
+  pressCartel = () =>{
+    alert("hi");
+  }
+
   displayCartels = () => (
       <View style={styles.cartel}>
         <ImageBackground source={require('./assets/alita.jpg')} style={styles.bgImage}>
           <View><Text style={styles.title}>Movie 1</Text></View>
           <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-          <View style={styles.like}><Text style={styles.likeStar} onPress={this.changeFav}>*</Text></View>
+          <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
         </ImageBackground>
       </View>
   );
@@ -73,21 +78,21 @@ export default class movies extends Component {
             <View style={styles.rows}>
               <View style={styles.cartel}>
                 <ImageBackground source={require('./assets/endgame.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
+                  <View><Text style={styles.title}>Avengers 4: End Game</Text></View>
                   <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.likeStar}>*</Text></View>
+                  <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
                 </ImageBackground>
               </View>
               <View style={styles.cartel}>
                 <ImageBackground source={require('./assets/endgame.jpg')} style={styles.bgImage}>
                   <View><Text style={styles.title}>Movie 1</Text></View>
                   <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Text style={styles.nolikeStar}>*</Text></View>
+                  <View style={styles.like}><Image source={require('./assets/Star_Inactive.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
                 </ImageBackground>
               </View>
-              <View style={styles.cartel}>
-                <View><Text style={{textAlign: 'center', }}>+</Text></View>
-              </View>
+              <TouchableOpacity style={styles.cartel} onPress={()=>this.pressCartel()}>
+                  <View><Text style={{textAlign: 'center', }}>+</Text></View>
+              </TouchableOpacity>
               
             </View>
             {rendermas}
@@ -150,7 +155,10 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(201,0,122,0.5)',
-    zIndex: 1,
+    zIndex: 2,
+    position: 'absolute',
+    bottom: -165,
+    width: '100%',
   },
   listed: {
     zIndex: 2, 
@@ -158,21 +166,9 @@ const styles = StyleSheet.create({
     left: 103,
   },
   listedLines: {
-    color: 'rgba(201,0,122,1)',
+    color: 'rgba(221,0,162,1)',
     fontWeight: '900',
     fontSize: 30,
-  },
-  nolistedLines: {
-    color: 'rgba(150,150,150,1)',
-    fontWeight: '900',
-    fontSize: 30,
-  },
-  like: {
-    zIndex: 2, 
-    position: 'absolute',
-    bottom: 0,
-    left: 10,
-    backgroundColor: 'white',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -180,23 +176,39 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
-    borderRadius: 100,
-    height: 30,
-    width: 30,
   },
-  likeStar: {
-    color: 'rgba(201,0,122,1)',
-    fontWeight: '900',
-    fontSize: 30,
-    textAlign: 'center',
-  },
-  nolikeStar: {
+  nolistedLines: {
     color: 'rgba(150,150,150,1)',
     fontWeight: '900',
     fontSize: 30,
-        textAlign: 'center',
-
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  like: {
+    zIndex: 2, 
+    position: 'absolute',
+    top: 10,
+    left: 10,
+  },
+  likeStar: {
+    aspectRatio: 1,
+    zIndex: 3,
+    height: 20,
+  },
+  nolikeStar: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   navBar: {
     justifyContent: 'space-between',
@@ -208,7 +220,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.75,
     shadowRadius: 3.84,
     elevation: 5,
   },

@@ -85,7 +85,7 @@ export default class search extends Component {
     render() {
         let button;
         if (this.state.band == 2) {
-            button = <Text style={styles.buttonC} onPress={this.CelRes(this.state.celebrityName)}> Continue </Text>
+            button = <Text style={styles.buttonC} onPress={()=>this.CelRes(this.state.celebrityName)}> Continue </Text>
         }
         return (
             <View style={styles.container}>
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
         margin: 20,
         fontSize: 18,
         textTransform: 'uppercase',
-
     },
     container: {
         flex: 1,
