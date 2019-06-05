@@ -48,7 +48,7 @@ export default class movies extends Component {
         <ImageBackground source={require('./assets/alita.jpg')} style={styles.bgImage}>
           <View><Text style={styles.title}>Movie 1</Text></View>
           <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-          <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
+          <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={()=>this.changeFav}></Image></View>
         </ImageBackground>
       </View>
   );
