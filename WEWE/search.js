@@ -30,7 +30,6 @@ export default class search extends Component {
     CelRes = (actorName) => {
         const { navigation } = this.props;
         navigation.navigate('celRes', {actorName});
-    
     }
     onChange = (text) => {
         this.setState({ text: text });

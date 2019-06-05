@@ -6,6 +6,21 @@ import { whileStatement } from '@babel/types';
 const titulo = {
     title: null
 }
+const cartel1 = {
+    poster1: null,
+    titulo1: null,
+    name1: null,
+}
+const cartel2 = {
+    poster2: null,
+    titulo2: null,
+    name2: null,
+}
+const cartel3 = {
+    poster3: null,
+    titulo3: null,
+    name3: null,
+}
 
 export default class celRes extends Component {
     
@@ -46,6 +61,65 @@ export default class celRes extends Component {
         };                   
     }
 
+    goInfo = (index) => {
+        let { titulaso } = 'null';
+        let { name } = 'null';
+        let { poster } = 'null';
+        if(index = 0){
+            titulaso = cartel1.titulo1;
+            name = cartel1.name1;
+            poster = cartel1.poster1;
+            if(cartel1.titulo1 == null){
+                const { navigation } = this.props;
+                navigation.navigate('cartelInfo', {titulaso}, {poster});
+            } else if (cartel1.name1 == null){
+                const { navigation } = this.props;
+                navigation.navigate('cartelInfo', {name}, {poster});
+            }
+        } else if(index = 1){
+            titulaso = cartel2.titulo2;
+            name = cartel2.name2;
+            poster = cartel2.poster2;
+            if(cartel2.titulo2 == null){
+                const { navigation } = this.props;
+                navigation.navigate('cartelInfo', {titulaso}, {poster});
+            } else if (cartel2.name2 == null){
+                const { navigation } = this.props;
+                navigation.navigate('cartelInfo', {name}, {poster});
+            }
+        } else if(index = 2){
+            titulaso = cartel3.titulo3;
+            name = cartel3.name3;
+            poster = cartel3.poster3;
+            if(cartel3.titulo3 == null){
+                const { navigation } = this.props;
+                navigation.navigate('cartelInfo', {titulaso}, {poster});
+            } else if (cartel3.name3 == null){
+                const { navigation } = this.props;
+                navigation.navigate('cartelInfo', {name}, {poster});
+            }
+        }
+    }
+
+    sendIndex = (index, movie) => {
+        if(index == 0){
+            cartel1.poster1 = movie.poster_path;
+            cartel1.titulo1 = movie.original_title;
+            cartel1.name1 = movie.original_name;
+            alert(cartel1.poster1);
+            alert(cartel1.titulo1);
+            alert(cartel1.name1);
+        } else if (index == 1){
+            cartel2.poster2 = movie.poster_path;
+            cartel2.titulo2 = movie.original_title;
+            cartel2.name2 = movie.original_name;
+        } else if ( index == 2){
+            cartel3.poster3 = movie.poster_path;
+            cartel3.titulo3 = movie.original_title;
+            cartel3.name3 = movie.original_name;
+        }
+    }
+
     render() {
         let { movies } = this.state;
         let imglink = ["https://image.tmdb.org/t/p/original"];
@@ -70,7 +144,8 @@ export default class celRes extends Component {
                 </View>
                 <View style={styles.rows}>
                     {movies.map((movie, index) =>
-                        <TouchableOpacity key={index} style={styles.cartel}>
+                        <TouchableOpacity key={index} style={styles.cartel} onPress={()=> this.goInfo(index)}>
+                                {this.sendIndex(index, movie)}
                                 <ImageBackground  source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
                                     {this.movieList(movie)}
                                     
@@ -78,7 +153,6 @@ export default class celRes extends Component {
                                     <View style={styles.like}><Image source={require('./assets/Star_Inactive.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
                                 </ImageBackground>
                         </TouchableOpacity>
-
                     )}
                 </View>
             </View>
