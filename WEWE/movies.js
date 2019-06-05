@@ -2,15 +2,41 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList, TextInput, ImageBackground } from 'react-native';
 import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
+import { forStatement } from '@babel/types';
 //import { NONAME } from 'dns';
 
+const page = {
+ number: 1
+}
 
 export default class movies extends Component {
-  state = {
-    imageSource: null,
-    text: "Search",
-    styleStar: 'styles.nolikeStar',
-  }
+  constructor() {
+    super();
+    this.state = {
+        movies: [],
+        imageSource: null,
+        text: "Search",
+        styleStar: 'styles.nolikeStar',
+    }
+}
+  componentDidMount() {
+    fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        movies: json.results,
+        
+      });
+      console.log(this.state.movies);
+    });
+}
+
+
+nextPage = () =>{
+  page.number++;
+  this.refs._scrollView.scrollTo(0); 
+  this.componentDidMount();
+}
   LoginPage =()=>{
     const { navigation } = this.props;
     navigation.navigate('login');
@@ -31,33 +57,21 @@ export default class movies extends Component {
       alert(this.state.styleStar);
     }
   }
-  displayRows = () => (
-    <View style={styles.rows}>
-      {this.displayCartels()}
-      {this.displayCartels()}
-      {this.displayCartels()}
-    </View>
-  );
 
   pressCartel = () =>{
     alert("hi");
   }
 
-  displayCartels = () => (
-      <View style={styles.cartel}>
-        <ImageBackground source={require('./assets/alita.jpg')} style={styles.bgImage}>
-          <View><Text style={styles.title}>Movie 1</Text></View>
-          <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-          <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={()=>this.changeFav}></Image></View>
-        </ImageBackground>
-      </View>
-  );
-
   render() {
-    let rendermas;
+    
+    let { movies } = this.state;
+    let imglink = ["https://image.tmdb.org/t/p/original"];
+    let movielink = ["http://localhost:3000/minfo"];
+    
+    /*let rendermas;
     if(this.state.styleStar == 'styles.nolikeStar'){
       rendermas =  this.displayRows();
-    }
+    }*/
     return (
       <View style={styles.container}>
         <View style={styles.navBar}>
@@ -72,30 +86,22 @@ export default class movies extends Component {
             <Image style={styles.logo}  source={require('./assets/wLogo.png')} />
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          <View style={styles.content}>
-            {this.displayRows()}
-            <View style={styles.rows}>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/endgame.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Avengers 4: End Game</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
-                </ImageBackground>
-              </View>
-              <View style={styles.cartel}>
-                <ImageBackground source={require('./assets/endgame.jpg')} style={styles.bgImage}>
-                  <View><Text style={styles.title}>Movie 1</Text></View>
-                  <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                  <View style={styles.like}><Image source={require('./assets/Star_Inactive.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
-                </ImageBackground>
-              </View>
-              <TouchableOpacity style={styles.cartel} onPress={()=>this.pressCartel()}>
+        <ScrollView ref='_scrollView'>
+          <View style={styles.rows}>
+          {movies.map((movie, index) =>
+           <View style={styles.cartel}>
+           <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
+             <View><Text style={styles.title}>{movie.original_title}</Text></View>
+             <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
+             <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={()=>this.changeFav}></Image></View>
+           </ImageBackground>
+         </View>
+                    )}
+             <View style={styles.cartel}>
+             <TouchableOpacity style={styles.cartel} onPress={()=>this.nextPage()}>
                   <View><Text style={{textAlign: 'center', }}>+</Text></View>
               </TouchableOpacity>
-              
-            </View>
-            {rendermas}
+         </View>
           </View>
         </ScrollView>
       </View>
@@ -113,6 +119,7 @@ const styles = StyleSheet.create({
   },
   rows: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'stretch',
   },
