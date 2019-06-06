@@ -56,7 +56,6 @@ export default class cartelInfo extends Component {
                 </View>
             );
         }
-        
     }
     render() { 
        
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
     navBar: {
         justifyContent: 'space-between',
         alignItems: 'stretch',
-        backgroundColor: '#f711dc',
+        backgroundColor: 'rgba(247,17,220,0.5)',
         flexDirection: 'row',
         shadowColor: "#000",
         shadowOffset: {
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
       navBar2: {
         justifyContent: 'space-between',
         alignItems: 'stretch',
-        backgroundColor: '#0BE9C7',
+        backgroundColor: 'rgba(11,233,199, 0.5)',
         flexDirection: 'row',
         shadowColor: "#000",
         shadowOffset: {

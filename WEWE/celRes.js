@@ -44,7 +44,7 @@ export default class celRes extends Component {
             return(<Text style={styles.titleSerie}>{titulo.title}</Text>);
         };                   
     }
-    goInfo = (index, movie) =>{
+    goInfo = (movie) =>{
         let { titulaso } = 'null';
         let { poster } = 'null';
         let { peli } = false;
@@ -91,7 +91,7 @@ export default class celRes extends Component {
                 </View>
                 <View style={styles.rows}>
                     {movies.map((movie, index) =>
-                        <TouchableOpacity key={index} style={styles.cartel} onPress={()=> this.goInfo(index, movie)}>
+                        <TouchableOpacity key={index} style={styles.cartel} onPress={()=> this.goInfo(movie)}>
                                 <ImageBackground  source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
                                     {this.movieList(movie)}
                                     

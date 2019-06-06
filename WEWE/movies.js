@@ -10,25 +10,35 @@ const page = {
 }
 
 export default class movies extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
         movies: [],
         imageSource: null,
         text: "Search",
         styleStar: 'styles.nolikeStar',
+        seriePage: props.navigation.getParam('serie'),
+        moviePage: props.navigation.getParam('movie'),
     }
 }
   componentDidMount() {
-    fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        movies: json.results,
-        
+    if(this.state.moviePage == true){
+      fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          movies: json.results,
+        });
       });
-      console.log(this.state.movies);
-    });
+    } else if(this.state.seriePage == true){
+      fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          movies: json.results,
+        });
+      });
+    }
 }
 
 
@@ -63,9 +73,28 @@ prevPage = () =>{
     }
   }
 
-  pressCartel = () =>{
-    alert("hi");
-  }
+  goInfo = (movie) =>{
+    let { titulaso } = 'null';
+    let { poster } = 'null';
+    let { peli } = false;
+    let { id } = 0;
+
+    const { navigation } = this.props;
+    
+    if(movie.original_title == null){  
+        titulaso = movie.original_name;
+        poster = movie.backdrop_path;
+        peli = false;
+        id = movie.id;
+        navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
+    } else {
+        titulaso = movie.original_title;
+        poster = movie.backdrop_path;
+        peli = true;
+        id = movie.id;
+        navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
+    }
+}
 
   displayCargaMas = () =>{
     return (
@@ -92,6 +121,44 @@ prevPage = () =>{
     );
   }
 
+  buildTitulo = (movie) =>{
+    if(this.state.moviePage == true){
+      return(<View><Text style={styles.title}>{movie.original_title}</Text></View>);
+    } else {
+      return(<View><Text style={styles.title}>{movie.original_name}</Text></View>);
+    }
+  }
+
+  constructNavBar = () => {
+    if(this.state.moviePage){
+      return(<View style={styles.navBar}>
+        <View style={styles.caja1}>
+          <Text style={styles.movies} >// MOVIES</Text>
+          <TextInput value={this.state.text} 
+            style={styles.search}
+            onChangeText={this.onChange}
+            onSubmitEditing={this.submit} />
+        </View>
+        <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
+          <Image style={styles.logo}  source={require('./assets/wLogo.png')} />
+        </TouchableOpacity>
+      </View>);
+    } else {
+      return(<View style={styles.navBar2}>
+        <View style={styles.caja1}>
+          <Text style={styles.movies} >// SERIES</Text>
+          <TextInput value={this.state.text} 
+            style={styles.search}
+            onChangeText={this.onChange}
+            onSubmitEditing={this.submit} />
+        </View>
+        <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
+          <Image style={styles.logo}  source={require('./assets/wLogo.png')} />
+        </TouchableOpacity>
+      </View>);
+    }
+  }
+
   render() {
     
     let { movies } = this.state;
@@ -110,28 +177,17 @@ prevPage = () =>{
     }*/
     return (
       <View style={styles.container}>
-        <View style={styles.navBar}>
-          <View style={styles.caja1}>
-            <Text style={styles.movies} >// MOVIES</Text>
-            <TextInput value={this.state.text} 
-              style={styles.search}
-              onChangeText={this.onChange}
-              onSubmitEditing={this.submit} />
-          </View>
-          <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
-            <Image style={styles.logo}  source={require('./assets/wLogo.png')} />
-          </TouchableOpacity>
-        </View>
+        {this.constructNavBar()}
         <ScrollView ref='_scrollView'>
           <View style={styles.rows}>
           {movies.map((movie, index) =>
-            <View style={styles.cartel} key={index}>
+            <TouchableOpacity style={styles.cartel} key={index} onPress={()=> this.goInfo(movie)}>
               <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
-                <View><Text style={styles.title}>{movie.original_title}</Text></View>
+                {this.buildTitulo(movie)}
                 <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
                 <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={()=>this.changeFav}></Image></View>
               </ImageBackground>
-            </View>
+            </TouchableOpacity>
                     )}
               
               {changePage}
@@ -169,6 +225,20 @@ const styles = StyleSheet.create({
   },
   conent: {
     flexDirection: 'column',
+  },
+  navBar2: {
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    backgroundColor: 'rgba(11,233,199, 1)',
+    flexDirection: 'row',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   rows: {
     flexDirection: 'row',

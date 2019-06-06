@@ -3,17 +3,10 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
-//import Clarifai from 'clarifai';
-
-//const Clarifai = require('clarifai');
 
 const imagePickerOptions = {
   title: 'Take a Picture'
 }
-
-//const app = new Clariafai.App({
-//  apiKey: '1e17c96d33274a809962560bda316e3e',
-//});
 
 export default class login extends Component {
   state = {
@@ -21,12 +14,16 @@ export default class login extends Component {
   }
   
   MoviesPage =()=>{
+    let movie = true;
+    let serie = false;
     const { navigation } = this.props;
-    navigation.navigate('movies');
+    navigation.navigate('movies', {movie, serie});
   }
   SeriesPage =()=>{
+    let movie = false;
+    let serie = true;
     const { navigation } = this.props;
-    navigation.navigate('series');
+    navigation.navigate('movies', {movie, serie});
   }
   SearchPage =()=>{
     const { navigation } = this.props;
