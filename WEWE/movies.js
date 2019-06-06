@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList, TextInput, ImageBackground } from 'react-native';
 import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import userdb from './userdb.json';
 import ImagePicker from 'react-native-image-picker';
 import { forStatement } from '@babel/types';
+import * as data from './userdb.json';
 //import { NONAME } from 'dns';
 
 const page = {
  number: 1
 }
 
+const color = {
+id: 0,
+}
+
+
 export default class movies extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        favM: [],
+        favS: [],
         movies: [],
         imageSource: null,
         text: "Search",
@@ -29,7 +38,10 @@ export default class movies extends Component {
         this.setState({
           movies: json.results,
         });
+        color.id=0;
+        console.log(data);
       });
+      
     } else if(this.state.seriePage == true){
       fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
       .then(response => response.json())
@@ -37,6 +49,7 @@ export default class movies extends Component {
         this.setState({
           movies: json.results,
         });
+        color.id=1;
       });
     }
 }
@@ -123,9 +136,9 @@ prevPage = () =>{
 
   buildTitulo = (movie) =>{
     if(this.state.moviePage == true){
-      return(<View><Text style={styles.title}>{movie.original_title}</Text></View>);
+      return(<View><Text style={styles.titleMovie}>{movie.original_title}</Text></View>);
     } else {
-      return(<View><Text style={styles.title}>{movie.original_name}</Text></View>);
+      return(<View><Text style={styles.titleSerie}>{movie.original_name}</Text></View>);
     }
   }
 
@@ -279,11 +292,21 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 0,
   },
-  title: {
+  titleMovie: {
     color: 'white',
     padding: 5,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(201,0,122,0.5)',
+    zIndex: 2,
+    position: 'absolute',
+    bottom: -165,
+    width: '100%',
+  },
+  titleSerie: {
+    color: 'white',
+    padding: 5,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(11,233,199,0.5)',
     zIndex: 2,
     position: 'absolute',
     bottom: -165,
