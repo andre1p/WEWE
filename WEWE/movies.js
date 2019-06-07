@@ -11,9 +11,15 @@ const page = {
  number: 1
 }
 
+const fav = {
+  bool: 0,
+  styleStar: 'styles.nolikeStar'
+}
+
 const color = {
 id: 0,
 }
+
 
 
 export default class movies extends Component {
@@ -85,6 +91,22 @@ prevPage = () =>{
       alert(this.state.styleStar);
     }
   }
+
+ compareLikes = (movie) => {
+      fav.bool = 0;
+     data.filmsFav.forEach(id => { 
+      if(id == movie.id){
+        fav.bool = 1; 
+       }     
+    })
+
+    if(fav.bool == 1){
+      fav.styleStar = styles.likeStar;
+    }else{
+      fav.styleStar = styles.nolikeStar;
+    }
+  }
+
 
   goInfo = (movie) =>{
     let { titulaso } = 'null';
@@ -197,8 +219,9 @@ prevPage = () =>{
             <TouchableOpacity style={styles.cartel} key={index} onPress={()=> this.goInfo(movie)}>
               <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
                 {this.buildTitulo(movie)}
+                {this.compareLikes(movie)}
                 <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-                <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={styles.likeStar} onPress={()=>this.changeFav}></Image></View>
+                <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={fav.styleStar} onPress={()=>this.changeFav}></Image></View>
               </ImageBackground>
             </TouchableOpacity>
                     )}
