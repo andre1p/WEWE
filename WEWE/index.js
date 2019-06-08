@@ -16,6 +16,7 @@ import series from './series.js';
 import search from './search.js';
 import celRes from './celRes.js';
 import cartelInfo from './cartelInfo.js';
+import infoMovie from './infoMovie.js';
 
 const navigator = createStackNavigator({
     'login': login, 
@@ -26,6 +27,7 @@ const navigator = createStackNavigator({
     'search': search,
     'celRes': celRes,
     'cartelInfo': cartelInfo,
+    'infoMovie': infoMovie,
     
 }, {headerMode: 'none'})
 

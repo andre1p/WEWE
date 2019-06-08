@@ -37,7 +37,7 @@ export default class movies extends Component {
     }
 }
   componentDidMount() {
-    if(this.state.moviePage == true){
+   
       fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
       .then(response => response.json())
       .then(json => {
@@ -47,17 +47,6 @@ export default class movies extends Component {
         color.id=0;
         console.log(data);
       });
-      
-    } else if(this.state.seriePage == true){
-      fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
-      .then(response => response.json())
-      .then(json => {
-        this.setState({
-          movies: json.results,
-        });
-        color.id=1;
-      });
-    }
 }
 
 
@@ -93,42 +82,27 @@ prevPage = () =>{
   }
 
  compareLikes = (movie) => {
-      fav.bool = 0;
-     data.filmsFav.forEach(id => { 
+  fav.bool = 0;
+  
+    data.filmsFav.forEach(id => { 
       if(id == movie.id){
         fav.bool = 1; 
        }     
     })
-
-    if(fav.bool == 1){
-      fav.styleStar = styles.likeStar;
-    }else{
-      fav.styleStar = styles.nolikeStar;
-    }
+   
+   if(fav.bool == 1){
+    fav.styleStar = styles.likeStar;
+  }else{
+    fav.styleStar = styles.nolikeStar;
+  }
   }
 
 
   goInfo = (movie) =>{
-    let { titulaso } = 'null';
-    let { poster } = 'null';
-    let { peli } = false;
-    let { id } = 0;
-
-    const { navigation } = this.props;
-    
-    if(movie.original_title == null){  
-        titulaso = movie.original_name;
-        poster = movie.backdrop_path;
-        peli = false;
+    let id = 0;
+    const { navigation } = this.props; 
         id = movie.id;
-        navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
-    } else {
-        titulaso = movie.original_title;
-        poster = movie.backdrop_path;
-        peli = true;
-        id = movie.id;
-        navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
-    }
+        navigation.navigate('infoMovie', {id});  
 }
 
   displayCargaMas = () =>{
@@ -156,16 +130,7 @@ prevPage = () =>{
     );
   }
 
-  buildTitulo = (movie) =>{
-    if(this.state.moviePage == true){
-      return(<View><Text style={styles.titleMovie}>{movie.original_title}</Text></View>);
-    } else {
-      return(<View><Text style={styles.titleSerie}>{movie.original_name}</Text></View>);
-    }
-  }
-
   constructNavBar = () => {
-    if(this.state.moviePage){
       return(<View style={styles.navBar}>
         <View style={styles.caja1}>
           <Text style={styles.movies} >// MOVIES</Text>
@@ -178,20 +143,6 @@ prevPage = () =>{
           <Image style={styles.logo}  source={require('./assets/wLogo.png')} />
         </TouchableOpacity>
       </View>);
-    } else {
-      return(<View style={styles.navBar2}>
-        <View style={styles.caja1}>
-          <Text style={styles.movies} >// SERIES</Text>
-          <TextInput value={this.state.text} 
-            style={styles.search}
-            onChangeText={this.onChange}
-            onSubmitEditing={this.submit} />
-        </View>
-        <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
-          <Image style={styles.logo}  source={require('./assets/wLogo.png')} />
-        </TouchableOpacity>
-      </View>);
-    }
   }
 
   render() {
@@ -205,11 +156,6 @@ prevPage = () =>{
     } else {
       changePage = this.displayCargaMasMenos();
     }
-
-    /*let rendermas;
-    if(this.state.styleStar == 'styles.nolikeStar'){
-      rendermas =  this.displayRows();
-    }*/
     return (
       <View style={styles.container}>
         {this.constructNavBar()}
@@ -218,7 +164,7 @@ prevPage = () =>{
           {movies.map((movie, index) =>
             <TouchableOpacity style={styles.cartel} key={index} onPress={()=> this.goInfo(movie)}>
               <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
-                {this.buildTitulo(movie)}
+              <View><Text style={styles.titleMovie}>{movie.original_title}</Text></View>
                 {this.compareLikes(movie)}
                 <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
                 <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={fav.styleStar} onPress={()=>this.changeFav}></Image></View>

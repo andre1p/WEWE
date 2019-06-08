@@ -14,16 +14,12 @@ export default class login extends Component {
   }
   
   MoviesPage =()=>{
-    let movie = true;
-    let serie = false;
     const { navigation } = this.props;
-    navigation.navigate('movies', {movie, serie});
+    navigation.navigate('movies');
   }
   SeriesPage =()=>{
-    let movie = false;
-    let serie = true;
     const { navigation } = this.props;
-    navigation.navigate('movies', {movie, serie});
+    navigation.navigate('series');
   }
   SearchPage =()=>{
     const { navigation } = this.props;
