@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, ImageBackground } from 'react-native';
 import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { whileStatement } from '@babel/types';
+import * as data from './userdb.json';
 
 const titulo = {
     title: null
@@ -15,20 +16,22 @@ export default class celRes extends Component {
             movies: [],
             actor: props.navigation.getParam('actorName'),
             text: 'Search',
+            loading: true,
         }
     }
     componentDidMount() {
-        const queryString = require('query-string');
-        var parsed = 'Morgan Freeman';
-
         fetch(`https://api.themoviedb.org/3/search/person?api_key=a7a70930a3a525de17aae6719fbd0d68&language=en-US&query=${this.state.actor}`)
             .then(response => response.json())
             .then(json => {
                 this.setState({
                     movies: json.results[0].known_for,
+                    loading: false,
                 });
 
             });
+    }
+    saveFav(){
+        data.seriesFav.push(this.state.id);
     }
     submit = () => {
         const { navigation } = this.props;
@@ -37,11 +40,23 @@ export default class celRes extends Component {
     movieList(movie) {
         if (movie.original_name == null) {
           titulo.title = movie.original_title;
-          return(<Text style={styles.title}>{titulo.title}</Text>);
+          return(
+          <View>
+            <Image style={styles.imageColorGradient} source={require('./assets/Gradient_PinkUP.png')}/>
+            <View><Text style={styles.title}>{titulo.title}</Text></View>
+            <View style={styles.listed}><Text style={styles.listedLines}>\\</Text></View>
+          </View>
+          );
         }
         else{
             titulo.title = movie.original_name;
-            return(<Text style={styles.titleSerie}>{titulo.title}</Text>);
+            return(
+            <View>
+                <Image style={styles.imageColorGradient} source={require('./assets/Gradient_CyanUP.png')}/> 
+                <Text style={styles.titleSerie}>{titulo.title}</Text>
+                <View style={styles.listed}><Text style={styles.listedLinesSerie}>\\</Text></View>
+            </View>
+            );
         };                   
     }
     goInfo = (movie) =>{
@@ -61,7 +76,14 @@ export default class celRes extends Component {
         let { movies } = this.state;
         let imglink = ["https://image.tmdb.org/t/p/original"];
         let movielink = ["http://localhost:3000/minfo"];
-        
+        let {loading} = this.state;
+        if(loading){
+            return(
+                <View style={styles.Loading}>
+                    <Image style={{aspectRatio: 1, height: 150, alignItems: 'center', justifyContent:'center'}} source={require('./assets/loading1.gif')}/>
+                </View>
+            );
+        } else {
         return (
             <View style={styles.container} >
                 <View style={styles.navBar}>
@@ -84,24 +106,39 @@ export default class celRes extends Component {
                         <TouchableOpacity key={index} style={styles.cartel} onPress={()=> this.goInfo(movie)}>
                                 <ImageBackground  source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
                                     {this.movieList(movie)}
-                                    
-                                    <View style={styles.listed}><Text style={styles.nolistedLines}>//</Text></View>
-                                    <View style={styles.like}><Image source={require('./assets/Star_Inactive.png')} style={styles.likeStar} onPress={this.changeFav}></Image></View>
+                                    <View style={styles.like}><Image source={require('./assets/Star_Inactive.png')} style={styles.likeStar}></Image></View>
                                 </ImageBackground>
                         </TouchableOpacity>
+                    
                     )}
                 </View>
             </View>
         );
+        }
     }
 }
 
 const styles = StyleSheet.create({
+    Loading:{
+        alignContent: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        alignItems:'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'white',
+    },
     knownFor: {
         margin: 20,
         fontSize: 28,
         textAlign: 'center',
         textTransform: 'uppercase',
+    },
+    imageColorGradient: {
+        zIndex: 15, 
+        position: 'absolute', 
+        bottom: 0, 
+        width: '100%',
     },
     container: {
         flex: 1,
@@ -110,6 +147,7 @@ const styles = StyleSheet.create({
     },
     rows: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'stretch',
       },
@@ -138,8 +176,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 2,
+        width: 0,
+        height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
@@ -150,50 +188,53 @@ const styles = StyleSheet.create({
         color: 'white',
         padding: 5,
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(201,0,122,0.5)',
         zIndex: 2,
         position: 'absolute',
-        bottom: 0,
+        bottom: -165,
         width: '100%',
+        zIndex: 6,
+        fontWeight: 'bold',
     },
     titleSerie: {
         color: 'white',
         padding: 5,
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(11,233,199,0.5)',
         zIndex: 2,
         position: 'absolute',
-        bottom: 0,
+        bottom: -165,
         width: '100%',
     },
     listed: {
-        zIndex: 2, 
+        zIndex: 10, 
         position: 'absolute',
-        left: 103,
+        left: 80,
+        top:-60,
       },
       listedLines: {
-        color: 'rgba(221,0,162,1)',
+        color: 'rgba(250,0,200,0.8)',
         fontWeight: '900',
-        fontSize: 30,
+        fontSize: 150,
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 2,
+        width: 0,
+        height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
+        zIndex: 10,
       },
-      nolistedLines: {
-        color: 'rgba(150,150,150,1)',
+      listedLinesSerie:{
+        color: 'rgba(11,233,199, 0.8)',
         fontWeight: '900',
-        fontSize: 30,
+        fontSize: 150,
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 2,
+        width: 0,
+        height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
+        zIndex: 10,
       },
       like: {
         zIndex: 2, 

@@ -194,7 +194,7 @@ prevPage = () =>{
             <TouchableOpacity style={styles.cartel} key={index} onPress={()=> this.goInfo(movie)}>
               <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
                 <Image style={styles.imageColorGradient} source={require('./assets/Gradient_CyanUP.png')}/>
-              <View><Text style={styles.titleMovie}>{movie.original_title}</Text></View>
+              <View><Text style={styles.titleMovie}>{movie.original_name}</Text></View>
                 <View style={styles.listed}><Text style={styles.listedLines}>\\</Text></View>
                 {this.compareLikes(movie)}
               </ImageBackground>

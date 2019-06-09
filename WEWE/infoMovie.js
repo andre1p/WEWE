@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList, TextInput, ImageBackground } from 'react-native';
 import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
+import * as data from './userdb.json';
 
 export default class infoMovie extends Component {
     constructor(props) {
@@ -18,7 +19,9 @@ export default class infoMovie extends Component {
     componentDidMount() {
         this.getInfo();
     }
-    
+    saveFav(){
+        data.seriesFav.push(this.state.id);
+    }
     getInfo() {
         if(this.state.id){
             axios.get(`https://api.themoviedb.org/3/movie/${this.state.id}?api_key=a7a70930a3a525de17aae6719fbd0d68&language=en-US`)
@@ -47,7 +50,7 @@ export default class infoMovie extends Component {
                 <View style={styles.Loading}>
                     <Image style={{aspectRatio: 1, height: 150, alignItems: 'center', justifyContent:'center'}} source={require('./assets/loading1.gif')}/>
                 </View>
-            )
+            );
         }else{
             let genres = ['Not found']
             if(this.state.infoFilm.genres){
@@ -97,7 +100,7 @@ export default class infoMovie extends Component {
                             </View>
                             
                             <View style={styles.buttons}>
-                                <TouchableOpacity style={styles.LikeButton}>
+                                <TouchableOpacity style={styles.LikeButton} onPress={() => this.saveFav()}>
                                     <Text>Like</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.ListButton}>

@@ -36,9 +36,7 @@ export default class infoSerie extends Component {
     }
 
     saveFav(){
-     data.seriesFav.push(this.state.id);
-     console.log(data.seriesFav);
-     console.log(this.state.id);
+        data.seriesFav.push(this.state.id);
     }
 
     render() { 
