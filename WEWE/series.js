@@ -100,18 +100,11 @@ changeFav = () => {
 
 
   goInfo = (movie) =>{
-    let { titulaso } = 'null';
-    let { poster } = 'null';
-    let { peli } = false;
     let { id } = 0;
 
     const { navigation } = this.props;
-
-    titulaso = movie.original_name;
-    poster = movie.backdrop_path;
-    peli = false;
     id = movie.id;
-    navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
+    navigation.navigate('infoSerie', {id});
     }
 
   displayCargaMas = () =>{
