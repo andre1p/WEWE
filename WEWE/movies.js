@@ -20,8 +20,6 @@ const color = {
 id: 0,
 }
 
-
-
 export default class movies extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +32,7 @@ export default class movies extends Component {
         styleStar: 'styles.nolikeStar',
         seriePage: props.navigation.getParam('serie'),
         moviePage: props.navigation.getParam('movie'),
+        loading: true,
     }
 }
   componentDidMount() {
@@ -43,6 +42,7 @@ export default class movies extends Component {
       .then(json => {
         this.setState({
           movies: json.results,
+          loading: false,
         });
         color.id=0;
         console.log(data);
@@ -151,11 +151,23 @@ prevPage = () =>{
     let imglink = ["https://image.tmdb.org/t/p/original"];
     let movielink = ["http://localhost:3000/minfo"];
     let changePage;
+    let {loading} = this.state;
+
     if(page.number == 1){
       changePage = this.displayCargaMas();
     } else {
       changePage = this.displayCargaMasMenos();
     }
+    if(loading){
+      return(
+        <View style={styles.container}>
+          {this.constructNavBar()}
+            <View>
+              <Image style={{height:30,}} source={require('.assets/loading.gif')}/>
+            </View>
+          </View>
+      );
+    } else {
     return (
       <View style={styles.container}>
         {this.constructNavBar()}
@@ -179,10 +191,16 @@ prevPage = () =>{
         </ScrollView>
       </View>
     );
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  Loading: {
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }, 
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',

@@ -9,6 +9,7 @@ export default class infoMovie extends Component {
         this.state = {
             loading: true,
             infoFilm: [],
+            infoCredits: [],
             id: props.navigation.getParam('id'),
             text: "Search",
         }
@@ -27,6 +28,13 @@ export default class infoMovie extends Component {
                     loading: false,
                 })
             });
+            axios.get(`https://api.themoviedb.org/3/movie/${this.state.id}/credits?api_key=a7a70930a3a525de17aae6719fbd0d68&language=en-US`)
+            .then(response => {
+                this.setState({
+                    infoCredits: response.data,
+                    loading: false,
+                })
+            });
         } 
     }
 
@@ -36,53 +44,126 @@ export default class infoMovie extends Component {
         let {loading} = this.state;
         if(loading){
             return(
-                <View><Text>Loading...</Text></View>
+                <View style={styles.Loading}>
+                    <Text>Loading...</Text>
+                </View>
             )
         }else{
             let genres = this.state.infoFilm.genres;
+            let production = this.state.infoFilm.production_companies;
             console.log(this.state.infoFilm);
             return ( 
                 <View>
-                <View style={styles.navBar2}>
-                    <View style={styles.caja1}>
-                        <Text style={styles.movies} >// MOVIES</Text>
-                        <TextInput value={this.state.text} 
-                        style={styles.search}
-                        onChangeText={this.onChange}
-                        onSubmitEditing={this.submit} />
+                    <View>
+                        <View style={styles.navBar2}>
+                            <View style={styles.caja1}>
+                                <Text style={styles.movies} >// MOVIES</Text>
+                            </View>
+                            <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
+                                <Image style={styles.logo}  source={require('./assets/wLogo.png')} />  
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.imgBG}>
+                            <Image source={{uri: imglink + this.state.infoFilm.backdrop_path}} style={styles.imgBG}/> 
+                        </View>
+                        <View style={styles.imgBGspace}>
+                            <View style={styles.movieTitle}>
+                                <Text style={styles.titleText}>{this.state.infoFilm.original_title}</Text>
+                                <Text style={styles.dateText}>{this.state.infoFilm.release_date}</Text>   
+                            </View>
+                            <Image style={styles.imgBGspace} source={require('./assets/gradient_BW.png')}/>
+                        </View>
                     </View>
-                    <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
-                        <Image style={styles.logo}  source={require('./assets/wLogo.png')} />  
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.imgBG}>
-                    <Image source={{uri: imglink + this.state.infoFilm.poster_path}} style={styles.imgBG}/> 
-                </View>
-                <View style={styles.imgBGspace}>
-                    <View style={styles.movieTitle}>
-                        <Text style={styles.titleText}>{this.state.infoFilm.original_title}</Text>
-                        <Text style={styles.dateText}>{this.state.infoFilm.release_date}</Text>   
-                    </View>
-                    <Image style={styles.imgBGspace} source={require('./assets/gradient_BW.png')}/>
-                </View>
 
-                <View style={styles.genresMovie}>
-                    {genres.map((genre,index) =>
-                    <Text key={index} style={styles.genreName}>{genre.name}</Text>
-                        )}
+                    <ScrollView ref='_scrollView'>
+                        <View style={styles.genresMovie}>
+                            {genres.map((genre,index) =>
+                            <Text key={index} style={styles.genreName}>{genre.name}</Text>
+                                )}
+                        </View>
+                        <View style={styles.overviewBox}>
+                            <Text style={styles.overview}>Overview</Text>
+                            <Text style={styles.overviewText}>{this.state.infoFilm.overview}</Text>
+                        </View>
+                        <View style={styles.overviewBox}>
+                            <Text style={styles.overview}>Duration</Text>
+                            <Text style={styles.overviewText}>{this.state.infoFilm.runtime} minutes.</Text>
+                        </View>
+                        
+                        <View style={styles.buttons}>
+                            <TouchableOpacity style={styles.LikeButton}>
+                                <Text>Like</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.ListButton}>
+                                <Text>To watch</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
+
                 </View>
-                <View>
-                    <Text>Overview</Text>
-                    
-                </View>
-            </View>
-             );
+            );
         }
        
     }
 }
  
 const styles = StyleSheet.create({
+    buttons:{
+        flexDirection: 'row',
+        marginLeft: 20,
+        margin: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    LikeButton: {
+        padding: 10,
+        backgroundColor: 'rgba(247,17,220,0.3)',
+        color: 'white',
+        fontSize: 25,
+        margin: 10,
+        marginRight: 20,
+        width: 120,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    ListButton:{
+        padding: 10,
+        backgroundColor: 'rgba(247,17,220,0.3)',
+        color: 'white',
+        fontSize: 25,
+        margin: 10,
+        width: 120,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    Companies:{
+        margin: 10,
+    },
+    Loading:{
+        alignContent: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(247,17,220,0.3)',
+    }, 
+    overviewBox:{
+        margin: 20,
+        marginBottom: 0,
+    },
+    OrganizeRow: {
+        flexDirection: 'row',
+    },
+    overview:{
+        color: 'rgba(10,10,10,1)',
+        fontSize: 26,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    overviewText: {
+        fontSize: 14,
+        textAlign: 'justify',
+    },
     imgBG: {
         width: '100%',
         height: 200,
@@ -91,7 +172,7 @@ const styles = StyleSheet.create({
     },
     imgBGspace: {
         width: '100%',
-        height: 120,
+        height: 130,
         zIndex: 1,
         position: 'relative',
 
@@ -122,10 +203,12 @@ const styles = StyleSheet.create({
         zIndex: 0,
         position: 'relative',
         flexDirection: 'row',
+        marginTop: 10,
+        marginLeft: 10,
     },
     genreName:{
         color: 'white',
-        backgroundColor: 'rgba(117,117,117,0.5)',
+        backgroundColor: 'rgba(247,17,220,0.5)',
         borderRadius: 50,
         padding: 10,
         paddingTop: 5,
