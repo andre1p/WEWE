@@ -56,14 +56,24 @@ export default class infoMovie extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.imgBG}>
-                    <Image source={{uri: imglink + this.state.infoFilm.poster_path}} style={styles.imgBG}/>
-                    <Text style={styles.movieTitle}>{this.state.infoFilm.original_title}</Text>
+                    <Image source={{uri: imglink + this.state.infoFilm.poster_path}} style={styles.imgBG}/> 
                 </View>
-                <View style={styles.imgBGspace}></View>
+                <View style={styles.imgBGspace}>
+                    <View style={styles.movieTitle}>
+                        <Text style={styles.titleText}>{this.state.infoFilm.original_title}</Text>
+                        <Text style={styles.dateText}>{this.state.infoFilm.release_date}</Text>   
+                    </View>
+                    <Image style={styles.imgBGspace} source={require('./assets/gradient_BW.png')}/>
+                </View>
+
                 <View style={styles.genresMovie}>
                     {genres.map((genre,index) =>
                     <Text key={index} style={styles.genreName}>{genre.name}</Text>
                         )}
+                </View>
+                <View>
+                    <Text>Overview</Text>
+                    
                 </View>
             </View>
              );
@@ -82,21 +92,31 @@ const styles = StyleSheet.create({
     imgBGspace: {
         width: '100%',
         height: 120,
-        zIndex: 0,
+        zIndex: 1,
         position: 'relative',
+
     },
     movieTitle:{
         color: 'white',
-        zIndex: 1,
+        zIndex: 2,
         position: 'absolute',
         paddingBottom: 10,
         paddingLeft: 10,
         bottom: 0,
         paddingTop: 10,
         width: '100%',
-        backgroundColor: 'rgba(247,17,220,0.5)',
         fontWeight: '900',
         fontSize: 20,
+    },
+    titleText:{
+        color: 'white',
+        fontWeight: '900',
+        fontSize: 20,
+    },
+    dateText: {
+        color: 'white',
+        fontWeight: '900',
+        fontSize: 10,
     },
     genresMovie:{
         zIndex: 0,

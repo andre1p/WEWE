@@ -164,6 +164,7 @@ prevPage = () =>{
           {movies.map((movie, index) =>
             <TouchableOpacity style={styles.cartel} key={index} onPress={()=> this.goInfo(movie)}>
               <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
+                <Image style={styles.imageColorGradient} source={require('./assets/Gradient_PinkUP.png')}/>
               <View><Text style={styles.titleMovie}>{movie.original_title}</Text></View>
                 {this.compareLikes(movie)}
                 <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
@@ -185,6 +186,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
+  },
+  imageColorGradient:{
+    zIndex: 5, 
+    position: 'absolute', 
+    bottom: 0, 
+    width: '100%',
   },
   cargarMas: {
     color: 'black',
@@ -265,11 +272,12 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 5,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(201,0,122,0.5)',
     zIndex: 2,
     position: 'absolute',
     bottom: -165,
     width: '100%',
+    zIndex: 6,
+    fontWeight: 'bold',
   },
   titleSerie: {
     color: 'white',
