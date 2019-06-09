@@ -28,7 +28,7 @@ export default class movies extends Component {
         favS: [],
         movies: [],
         imageSource: null,
-        text: "Search",
+        text: "",
         styleStar: 'styles.nolikeStar',
         seriePage: props.navigation.getParam('serie'),
         moviePage: props.navigation.getParam('movie'),
@@ -51,6 +51,24 @@ export default class movies extends Component {
       });
 }
 
+onChange = (text) => {
+  this.setState({
+    loading: true
+  });
+  if(text){
+    fetch(`http://api.themoviedb.org/3/search/movie?query=${text}&api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        movies: json.results,
+        loading: false
+      });
+    });
+    
+  }
+  this.setState({ text:text });
+
+  }
 
 nextPage = () =>{
   page.number++;
@@ -66,9 +84,7 @@ prevPage = () =>{
     const { navigation } = this.props;
     navigation.navigate('login');
   }
-  onChange = (text) => {
-    this.setState({ text:text });
-  }
+
   submit = () => {
     const { navigation } = this.props;
     navigation.navigate('search');
@@ -136,8 +152,9 @@ prevPage = () =>{
           <Text style={styles.movies} >// MOVIES</Text>
           <TextInput value={this.state.text} 
             style={styles.search}
+            placeholder={'Search'}
             onChangeText={this.onChange}
-            onSubmitEditing={this.submit} />
+            onSubmitEditing={this.onChange} />
         </View>
         <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
           <Image style={styles.logo}  source={require('./assets/wLogo.png')} />

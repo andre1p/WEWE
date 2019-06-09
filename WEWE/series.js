@@ -50,6 +50,24 @@ export default class series extends Component {
       });
 }
 
+onChange = (text) => {
+  this.setState({
+    loading: true
+  });
+  if(text){
+    fetch(`http://api.themoviedb.org/3/search/tv?query=${text}&api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        movies: json.results,
+        loading: false
+      });
+    });
+    
+  }
+  this.setState({ text:text });
+
+  }
 
 nextPage = () =>{
   page.number++;
@@ -65,9 +83,7 @@ prevPage = () =>{
     const { navigation } = this.props;
     navigation.navigate('login');
   }
-  onChange = (text) => {
-    this.setState({ text:text });
-  }
+
   submit = () => {
     const { navigation } = this.props;
     navigation.navigate('search');
@@ -137,7 +153,7 @@ prevPage = () =>{
             placeholder={'Search'}
             style={styles.search}
             onChangeText={this.onChange}
-            onSubmitEditing={this.submit} />
+            onSubmitEditing={this.onChange} />
         </View>
         <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
           <Image style={styles.logo}  source={require('./assets/wLogo.png')} />

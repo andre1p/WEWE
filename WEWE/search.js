@@ -22,6 +22,7 @@ export default class search extends Component {
         takePic: 'Take a picture',
         band: 1,
         text: 'Search',
+        loading: false,
     }
     LoginPage = () => {
         const { navigation } = this.props;
@@ -39,6 +40,7 @@ export default class search extends Component {
         navigation.navigate('search');
     }
     takePicture = () => {
+      
         ImagePicker.showImagePicker(imagePickerOptions, (response) => {
             console.log('Response = ', response);
 
@@ -49,22 +51,39 @@ export default class search extends Component {
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
+                this.setState({
+                    loading: true,
+                })
                 const source = { uri: response.uri };
                 const base64data = response.data;
                 this.setState({ imageSource: source });
                 app.models.predict(CELEBRITY_MODEL, { base64: base64data })
 
                     .then(response => {
-                        var actor = response.outputs[0].data.regions[0].data.concepts[0].name;
-                        console.log('success', JSON.stringify(response.outputs[0].data.regions[0].data.concepts[0].name));
-                        this.setState({ celebrityName: actor });
-                        this.setState({ takePic: 'Take again' });
-                        this.setState({ band: 2 });
-
+                       
+                        
+                            if(response.outputs[0].data.regions[0].data.concepts[0].value >= 0.87){
+                                var actor = response.outputs[0].data.regions[0].data.concepts[0].name;
+                                this.setState({ celebrityName: actor });
+                                this.setState({ takePic: 'Take again' });
+                                this.setState({ band: 2 });
+                                this.setState({
+                                    loading: false,
+                                })
+                            }else{
+                                this.setState({ band: 1 });
+                               this.setState({ celebrityName: 'Not found or invalid image type' });
+                               this.setState({
+                                loading: false,
+                            })
+                            }
                     })
                     .catch(error => {
                         this.setState({ band: 1 });
                         this.setState({ celebrityName: 'Not found or invalid image type' });
+                        this.setState({
+                            loading: false,
+                        })
 
                     })
             }
@@ -81,39 +100,60 @@ export default class search extends Component {
         const { navigation } = this.props;
         navigation.navigate('login');
     }
-    render() {
-        let button;
+
+    loading(){
+          let button;
         if (this.state.band == 2) {
             button = <Text style={styles.buttonC} onPress={()=>this.CelRes(this.state.celebrityName)}> Continue </Text>
         }
+        if(this.state.loading){
+            return(           
+                <View style={styles.containerGif}>
+                  <View style={styles.Loading}>
+                    <Image style={{aspectRatio: 1, height: 150}} source={require('./assets/loading1.gif')}/>
+                  </View>          
+                  </View>    
+            );
+          }else{
+          return(<ScrollView>
+            <View style={styles.content}>
+                <Text style={styles.title}>{this.state.celebrityName}</Text>
+                <Image source={this.state.imageSource} style={styles.image} />
+                <Text style={styles.buttonS} onPress={this.takePicture}>{this.state.takePic}</Text>
+                {button}
+            </View>
+        </ScrollView>);
+          } 
+    }
+
+    render() {
+      
         return (
             <View style={styles.container}>
                 <View style={styles.navBar}>
                     <View style={styles.caja1}>
                         <Text style={styles.movies} >// SEARCH</Text>
-                        <TextInput value={this.state.text} 
-                        style={styles.search}
-                        onChangeText={this.onChange}
-                        onSubmitEditing={this.submit} />
                     </View>
                     <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
                         <Image style={styles.logo}  source={require('./assets/logo.png')} />
                     </TouchableOpacity>
                 </View>
-                <ScrollView>
-                    <View style={styles.content}>
-                        <Text style={styles.title}>{this.state.celebrityName}</Text>
-                        <Image source={this.state.imageSource} style={styles.image} />
-                        <Text style={styles.buttonS} onPress={this.takePicture}>{this.state.takePic}</Text>
-                        {button}
-                    </View>
-                </ScrollView>
+                {this.loading()}      
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    Loading:{
+        alignContent: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        alignItems:'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'white',
+      }, 
     title: {
         margin: 20,
         fontSize: 18,
