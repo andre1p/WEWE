@@ -75,28 +75,32 @@ export default class infoMovie extends Component {
                         </View>
                     </View>
 
-                    <ScrollView ref='_scrollView'>
-                        <View style={styles.genresMovie}>
-                            {genres.map((genre,index) =>
-                            <Text key={index} style={styles.genreName}>{genre.name}</Text>
-                                )}
-                        </View>
-                        <View style={styles.overviewBox}>
-                            <Text style={styles.overview}>Overview</Text>
-                            <Text style={styles.overviewText}>{this.state.infoFilm.overview}</Text>
-                        </View>
-                        <View style={styles.overviewBox}>
-                            <Text style={styles.overview}>Duration</Text>
-                            <Text style={styles.overviewText}>{this.state.infoFilm.runtime} minutes.</Text>
-                        </View>
-                        
-                        <View style={styles.buttons}>
-                            <TouchableOpacity style={styles.LikeButton}>
-                                <Text>Like</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.ListButton}>
-                                <Text>To watch</Text>
-                            </TouchableOpacity>
+                    <ScrollView scrollEventThrottle={16}>
+                        <View>
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <View style={styles.genresMovie}>
+                                    {genres.map((genre,index) =>
+                                    <Text key={index} style={styles.genreName}>{genre.name}</Text>
+                                        )}
+                                </View>
+                            </ScrollView>
+                            <View style={styles.overviewBox}>
+                                <Text style={styles.overview}>Overview</Text>
+                                <Text style={styles.overviewText}>{this.state.infoFilm.overview}</Text>
+                            </View>
+                            <View style={styles.overviewBox}>
+                                <Text style={styles.overview}>Duration</Text>
+                                <Text style={styles.overviewText}>{this.state.infoFilm.runtime} minutes.</Text>
+                            </View>
+                            
+                            <View style={styles.buttons}>
+                                <TouchableOpacity style={styles.LikeButton}>
+                                    <Text>Like</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.ListButton}>
+                                    <Text>To watch</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </ScrollView>
 
