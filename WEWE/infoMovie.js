@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList, TextInput, ImageBackground } from 'react-native';
 import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
-import LinearGradient from 'react-native-linear-gradient';
 
 export default class infoMovie extends Component {
     constructor(props) {
@@ -43,7 +42,7 @@ export default class infoMovie extends Component {
             let genres = this.state.infoFilm.genres;
             console.log(this.state.infoFilm);
             return ( 
-                <LinearGradient colors={['rgba(247,17,220,0.5)','rgba(247,17,220,0)']}>
+                <View>
                 <View style={styles.navBar2}>
                     <View style={styles.caja1}>
                         <Text style={styles.movies} >// MOVIES</Text>
@@ -66,7 +65,7 @@ export default class infoMovie extends Component {
                     <Text key={index} style={styles.genreName}>{genre.name}</Text>
                         )}
                 </View>
-            </LinearGradient>
+            </View>
              );
         }
        

@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 2,
+    fontWeight: '900',
   },
   buttonR: {
     color: 'white',
@@ -85,6 +86,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 2,
+    fontWeight: '900',
   },
   buttonS: {
     fontSize: 16,
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 2,
+    fontWeight: '900',
   },
   logo: {
     width: 160,
