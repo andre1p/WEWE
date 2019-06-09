@@ -36,7 +36,9 @@ export default class movies extends Component {
     }
 }
   componentDidMount() {
-   
+      this.setState({
+        loading: true,
+      });
       fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
       .then(response => response.json())
       .then(json => {
@@ -71,15 +73,6 @@ prevPage = () =>{
     const { navigation } = this.props;
     navigation.navigate('search');
   }
-  changeFav = () => {
-    if(this.state.styleStar == 'styles.nolikeStar'){
-      this.setState({styleStar: 'styles.likeStar'});
-      alert(this.state.styleStar);
-    } else {
-      this.setState({styleStar: 'styles.nolikeStar'});
-      alert(this.state.styleStar);
-    }
-  }
 
  compareLikes = (movie) => {
   fav.bool = 0;
@@ -90,20 +83,27 @@ prevPage = () =>{
        }     
     })
    
-   if(fav.bool == 1){
-    fav.styleStar = styles.likeStar;
-  }else{
-    fav.styleStar = styles.nolikeStar;
+  if (fav.bool == 1){
+    return(
+      <View style={styles.like}>
+        <Image source={require('./assets/Star_Active.png')} style={styles.likeStar}></Image>
+      </View>
+    );
+  } else{
+      return(
+        <View style={styles.like}>
+          <Image source={require('./assets/Star_Inactive.png')} style={styles.likeStar}></Image>
+        </View>
+      );
+    }
   }
-  }
-
 
   goInfo = (movie) =>{
     let id = 0;
     const { navigation } = this.props; 
         id = movie.id;
         navigation.navigate('infoMovie', {id});  
-}
+  }
 
   displayCargaMas = () =>{
     return (
@@ -158,12 +158,13 @@ prevPage = () =>{
     } else {
       changePage = this.displayCargaMasMenos();
     }
+
     if(loading){
       return(
         <View style={styles.container}>
           {this.constructNavBar()}
-            <View>
-              <Image style={{height:30,}} source={require('.assets/loading.gif')}/>
+            <View style={styles.Loading}>
+              <Image style={{aspectRatio: 1, height: 150}} source={require('./assets/loading1.gif')}/>
             </View>
           </View>
       );
@@ -178,9 +179,8 @@ prevPage = () =>{
               <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
                 <Image style={styles.imageColorGradient} source={require('./assets/Gradient_PinkUP.png')}/>
               <View><Text style={styles.titleMovie}>{movie.original_title}</Text></View>
+                <View style={styles.listed}><Text style={styles.listedLines}>\\</Text></View>
                 {this.compareLikes(movie)}
-                <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
-                <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={fav.styleStar} onPress={()=>this.changeFav}></Image></View>
               </ImageBackground>
             </TouchableOpacity>
                     )}
@@ -196,14 +196,18 @@ prevPage = () =>{
 }
 
 const styles = StyleSheet.create({
-  Loading: {
-    textAlign: 'center',
-    alignItems: 'center',
+  Loading:{
+    alignContent: 'center',
     justifyContent: 'center',
+    textAlign: 'center',
+    alignItems:'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'white',
   }, 
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   imageColorGradient:{
     zIndex: 5, 
@@ -308,14 +312,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   listed: {
-    zIndex: 2, 
+    zIndex: 10, 
     position: 'absolute',
-    left: 103,
+    left: 80,
+    top:-60,
   },
   listedLines: {
-    color: 'rgba(221,0,162,1)',
+    color: 'rgba(250,0,200,0.8)',
     fontWeight: '900',
-    fontSize: 30,
+    fontSize: 150,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -323,9 +328,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    zIndex: 10,
   },
   nolistedLines: {
-    color: 'rgba(150,150,150,1)',
+    color: 'rgba(150,150,150,0.8)',
     fontWeight: '900',
     fontSize: 30,
     shadowColor: "#000",
@@ -335,6 +341,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    zIndex: 10,
   },
   like: {
     zIndex: 2, 
@@ -348,14 +355,9 @@ const styles = StyleSheet.create({
     height: 20,
   },
   nolikeStar: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.75,
-    shadowRadius: 3.84,
-    elevation: 5,
+    aspectRatio: 1,
+    zIndex: 3,
+    height: 20,
   },
   navBar: {
     justifyContent: 'space-between',

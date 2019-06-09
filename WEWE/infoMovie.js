@@ -16,7 +16,7 @@ export default class infoMovie extends Component {
     }
 
     componentDidMount() {
-            this.getInfo();
+        this.getInfo();
     }
     
     getInfo() {
@@ -45,7 +45,7 @@ export default class infoMovie extends Component {
         if(loading){
             return(
                 <View style={styles.Loading}>
-                    <Text>Loading...</Text>
+                    <Image style={{aspectRatio: 1, height: 150, alignItems: 'center', justifyContent:'center'}} source={require('./assets/loading1.gif')}/>
                 </View>
             )
         }else{
@@ -143,9 +143,10 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         textAlign: 'center',
+        alignItems:'center',
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(247,17,220,0.3)',
+        backgroundColor: 'white',
     }, 
     overviewBox:{
         margin: 20,

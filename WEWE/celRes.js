@@ -45,25 +45,15 @@ export default class celRes extends Component {
         };                   
     }
     goInfo = (movie) =>{
-        let { titulaso } = 'null';
-        let { poster } = 'null';
-        let { peli } = false;
-        let { id } = 0;
-
-        const { navigation } = this.props;
+        let id = 0;
+        const { navigation } = this.props; 
         
         if(movie.original_title == null){  
-            titulaso = movie.original_name;
-            poster = movie.backdrop_path;
-            peli = false;
             id = movie.id;
-            navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
+            navigation.navigate('infoSerie', {id});
         } else {
-            titulaso = movie.original_title;
-            poster = movie.backdrop_path;
-            peli = true;
             id = movie.id;
-            navigation.navigate('cartelInfo', {titulaso, poster, peli, id});
+            navigation.navigate('infoMovie', {id});
         }
     }
 
