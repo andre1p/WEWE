@@ -21,7 +21,6 @@ id: 0,
 }
 
 
-
 export default class series extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +35,7 @@ export default class series extends Component {
         moviePage: props.navigation.getParam('movie'),
     }
 }
+
   componentDidMount() {
       fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
       .then(response => response.json())
@@ -47,6 +47,9 @@ export default class series extends Component {
       });
     }
 
+  searchFilm(){
+
+  }
 
 nextPage = () =>{
   page.number++;
@@ -160,10 +163,6 @@ changeFav = () => {
       changePage = this.displayCargaMasMenos();
     }
 
-    /*let rendermas;
-    if(this.state.styleStar == 'styles.nolikeStar'){
-      rendermas =  this.displayRows();
-    }*/
     return (
       <View style={styles.container}>
         {this.constructNavBar()}

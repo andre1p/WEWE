@@ -13,6 +13,7 @@ export default class infoSerie extends Component {
         this.state = {
             loading: true,
             infoSerie: [],
+            datadb: data,
             id: props.navigation.getParam('id'),
             text: "Search",
         }
@@ -35,7 +36,6 @@ export default class infoSerie extends Component {
     }
 
     saveFav(){
-        alert(data.seriesFav);
      data.seriesFav.push(this.state.id);
      console.log(data.seriesFav);
      console.log(this.state.id);
