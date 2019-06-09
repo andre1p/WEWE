@@ -52,6 +52,7 @@ export default class movies extends Component {
 }
 
 onChange = (text) => {
+  page.number=1
   this.setState({
     loading: true
   });

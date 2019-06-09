@@ -77,8 +77,8 @@ export default class infoSerie extends Component {
                         </View>
                         <View style={styles.imgBGspace}>
                             <View style={styles.movieTitle}>
-                                <Text style={styles.titleText}>{this.state.infoFilm.original_title}</Text>
-                                <Text style={styles.dateText}>{this.state.infoFilm.release_date}</Text>   
+                                <Text style={styles.titleText}>{this.state.infoFilm.original_name}</Text>
+                                <Text style={styles.dateText}>{this.state.infoFilm.first_air_date}</Text>   
                             </View>
                             <Image style={styles.imgBGspace} source={require('./assets/gradient_BW.png')}/>
                         </View>

@@ -16,9 +16,6 @@ const fav = {
   styleStar: 'styles.nolikeStar'
 }
 
-const color = {
-id: 0,
-}
 
 export default class series extends Component {
   constructor(props) {
@@ -36,6 +33,7 @@ export default class series extends Component {
     }
 }
   componentDidMount() {
+   
       this.setState({
         loading: true,
       });
@@ -51,6 +49,7 @@ export default class series extends Component {
 }
 
 onChange = (text) => {
+  page.number=1
   this.setState({
     loading: true
   });
@@ -71,13 +70,13 @@ onChange = (text) => {
 
 nextPage = () =>{
   page.number++;
-  this.refs._scrollView.scrollTo(0); 
-  this.componentDidMount();
+  this.refs._scrollView.scrollTo(0);
+    this.componentDidMount();
 }
 prevPage = () =>{
   page.number--;
   this.refs._scrollView.scrollTo(0); 
-  this.componentDidMount();
+    this.componentDidMount();
 }
   LoginPage =()=>{
     const { navigation } = this.props;
