@@ -151,6 +151,7 @@ prevPage = () =>{
           <Text style={styles.movies} >// SERIES</Text>
           <TextInput value={this.state.text}
             placeholder={'Search'}
+            placeholderTextColor="#fff"
             style={styles.search}
             onChangeText={this.onChange}
             onSubmitEditing={this.onChange} />

@@ -153,6 +153,7 @@ prevPage = () =>{
           <TextInput value={this.state.text} 
             style={styles.search}
             placeholder={'Search'}
+            placeholderTextColor="#fff"
             onChangeText={this.onChange}
             onSubmitEditing={this.onChange} />
         </View>

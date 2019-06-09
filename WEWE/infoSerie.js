@@ -50,7 +50,11 @@ export default class infoSerie extends Component {
                 </View>
             )
         }else{
-            let genres = this.state.infoFilm.genres;
+            let genres = ['Not found']
+            if(this.state.infoFilm.genres){
+                genres = this.state.infoFilm.genres;
+            }
+           
             let production = this.state.infoFilm.production_companies;
             console.log(this.state.infoFilm);
             let Seasons = 'Seasons';
