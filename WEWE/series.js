@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Button, FlatList, TextInput, ImageBackground } from 'react-native';
-import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import userdb from './userdb.json';
-import ImagePicker from 'react-native-image-picker';
-import { forStatement } from '@babel/types';
+import { StyleSheet, Text, View, Image, TextInput, ImageBackground } from 'react-native';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import * as data from './userdb.json';
-//import { NONAME } from 'dns';
 
 const page = {
  number: 1
@@ -249,23 +245,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     zIndex: 0,
-  },
-  conent: {
-    flexDirection: 'column',
-  },
-  navBar2: {
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    backgroundColor: 'rgba(11,233,199, 1)',
-    flexDirection: 'row',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.75,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   rows: {
     flexDirection: 'row',

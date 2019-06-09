@@ -1,18 +1,9 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Button, FlatList } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import ImagePicker from 'react-native-image-picker';
-
-const imagePickerOptions = {
-  title: 'Take a Picture'
-}
+import { StyleSheet, Text, View, Image} from 'react-native';
 
 export default class login extends Component {
-  state = {
-    imageSource: null,
-  }
-  
+
   MoviesPage =()=>{
     const { navigation } = this.props;
     navigation.navigate('movies');
@@ -44,17 +35,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  user: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 8,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-  },
-  userName: {
-    fontSize: 16,
-    marginLeft: 15,
   },
   buttonL: {
     color: 'white',
@@ -107,10 +87,5 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     margin: 10,
-  },
-  image: {
-    height: 100,
-    aspectRatio: .75,
-    marginBottom: 20,
   }
 });

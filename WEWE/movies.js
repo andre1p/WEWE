@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Button, FlatList, TextInput, ImageBackground } from 'react-native';
-import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import userdb from './userdb.json';
-import ImagePicker from 'react-native-image-picker';
-import { forStatement } from '@babel/types';
+import { StyleSheet, Text, View, Image, TextInput, ImageBackground } from 'react-native';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import * as data from './userdb.json';
-//import { NONAME } from 'dns';
 
 const page = {
  number: 1
@@ -17,7 +13,7 @@ const fav = {
 }
 
 const color = {
-id: 0,
+  id: 0,
 }
 
 export default class movies extends Component {
@@ -253,23 +249,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 0,
   },
-  conent: {
-    flexDirection: 'column',
-  },
-  navBar2: {
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    backgroundColor: 'rgba(11,233,199, 1)',
-    flexDirection: 'row',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.75,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   rows: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -320,16 +299,6 @@ const styles = StyleSheet.create({
     zIndex: 6,
     fontWeight: 'bold',
   },
-  titleSerie: {
-    color: 'white',
-    padding: 5,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(11,233,199,0.5)',
-    zIndex: 2,
-    position: 'absolute',
-    bottom: -165,
-    width: '100%',
-  },
   listed: {
     zIndex: 10, 
     position: 'absolute',
@@ -340,19 +309,6 @@ const styles = StyleSheet.create({
     color: 'rgba(250,0,200,0.8)',
     fontWeight: '900',
     fontSize: 150,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    zIndex: 10,
-  },
-  nolistedLines: {
-    color: 'rgba(150,150,150,0.8)',
-    fontWeight: '900',
-    fontSize: 30,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

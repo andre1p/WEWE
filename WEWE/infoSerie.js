@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Button, FlatList, TextInput, ImageBackground } from 'react-native';
-import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import * as data from './userdb.json';
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, ImageBackground } from 'react-native';
-import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import { whileStatement } from '@babel/types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as data from './userdb.json';
 
 const titulo = {

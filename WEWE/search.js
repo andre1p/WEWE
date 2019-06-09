@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Button, TextInput, FlatList } from 'react-native';
-import { TouchableHighlight, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-picker';
 import Clarifai from 'clarifai'
-
-//const Clarifai = require('clarifai');
 
 const imagePickerOptions = {
     title: 'Take a Picture'

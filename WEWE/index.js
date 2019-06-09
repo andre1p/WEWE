@@ -5,7 +5,6 @@
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
 
-import App from './App';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import login from './login.js';
 import movies from './movies.js';
