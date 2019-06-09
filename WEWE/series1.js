@@ -20,6 +20,7 @@ const color = {
 id: 0,
 }
 
+
 export default class series extends Component {
   constructor(props) {
     super(props);
@@ -32,24 +33,19 @@ export default class series extends Component {
         styleStar: 'styles.nolikeStar',
         seriePage: props.navigation.getParam('serie'),
         moviePage: props.navigation.getParam('movie'),
-        loading: true,
     }
 }
+
   componentDidMount() {
-      this.setState({
-        loading: true,
-      });
       fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
       .then(response => response.json())
       .then(json => {
         this.setState({
           movies: json.results,
-          loading: false
         });
-      
+        color.id=1;
       });
-}
-
+    }
 
 nextPage = () =>{
   page.number++;
@@ -61,48 +57,68 @@ prevPage = () =>{
   this.refs._scrollView.scrollTo(0); 
   this.componentDidMount();
 }
-  LoginPage =()=>{
+
+LoginPage =()=>{
     const { navigation } = this.props;
     navigation.navigate('login');
   }
+
   onChange = (text) => {
+  
+    if(text){
+      fetch(`http://api.themoviedb.org/3/search/movie?query=${text}&api_key=a7a70930a3a525de17aae6719fbd0d68&page=${page.number}`)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          movies: json.results,
+        });
+        color.id=1;
+      });
+      
+    }
     this.setState({ text:text });
-  }
-  submit = () => {
+  
+    }
+    
+  
+submit = () => {
     const { navigation } = this.props;
     navigation.navigate('search');
+  }
+  
+changeFav = () => {
+    if(this.state.styleStar == 'styles.nolikeStar'){
+      this.setState({styleStar: 'styles.likeStar'});
+      alert(this.state.styleStar);
+    } else {
+      this.setState({styleStar: 'styles.nolikeStar'});
+      alert(this.state.styleStar);
+    }
   }
 
  compareLikes = (movie) => {
   fav.bool = 0;
-  
-    data.filmsFav.forEach(id => { 
+    data.seriesFav.forEach(id => { 
       if(id == movie.id){
         fav.bool = 1; 
+        console.log(id);
        }     
     })
-   
-  if (fav.bool == 1){
-    return(
-      <View style={styles.like}>
-        <Image source={require('./assets/Star_Active.png')} style={styles.likeStar}></Image>
-      </View>
-    );
-  } else{
-      return(
-        <View style={styles.like}>
-          <Image source={require('./assets/Star_Inactive.png')} style={styles.likeStar}></Image>
-        </View>
-      );
-    }
+   if(fav.bool == 1){
+    fav.styleStar = styles.likeStar;
+  }else{
+    fav.styleStar = styles.nolikeStar;
+  }
   }
 
+
   goInfo = (movie) =>{
-    let id = 0;
-    const { navigation } = this.props; 
-        id = movie.id;
-        navigation.navigate('infoSerie', {id});  
-  }
+    let { id } = 0;
+
+    const { navigation } = this.props;
+    id = movie.id;
+    navigation.navigate('infoSerie', {id});
+    }
 
   displayCargaMas = () =>{
     return (
@@ -130,20 +146,21 @@ prevPage = () =>{
   }
 
   constructNavBar = () => {
-      return(<View style={styles.navBar}>
+      return(<View style={styles.navBar2}>
         <View style={styles.caja1}>
           <Text style={styles.movies} >// SERIES</Text>
-          <TextInput value={this.state.text}
-            placeholder={'Search'}
+          <TextInput value={this.state.text} 
             style={styles.search}
+            placeholder={'Search'}
             onChangeText={this.onChange}
-            onSubmitEditing={this.submit} />
+            onSubmitEditing={this.onChange} />
         </View>
         <TouchableOpacity style={styles.cajaL} onPress={this.LoginPage}>
           <Image style={styles.logo}  source={require('./assets/wLogo.png')} />
         </TouchableOpacity>
       </View>);
-  }
+    }
+  
 
   render() {
     
@@ -151,24 +168,14 @@ prevPage = () =>{
     let imglink = ["https://image.tmdb.org/t/p/original"];
     let movielink = ["http://localhost:3000/minfo"];
     let changePage;
-    let {loading} = this.state;
-
+  
+      console.log(this.state.movies);
     if(page.number == 1){
       changePage = this.displayCargaMas();
     } else {
       changePage = this.displayCargaMasMenos();
     }
 
-    if(loading){
-      return(
-        <View style={styles.container}>
-          {this.constructNavBar()}
-            <View style={styles.Loading}>
-              <Image style={{aspectRatio: 1, height: 150}} source={require('./assets/loading2.gif')}/>
-            </View>
-          </View>
-      );
-    } else {
     return (
       <View style={styles.container}>
         {this.constructNavBar()}
@@ -177,10 +184,10 @@ prevPage = () =>{
           {movies.map((movie, index) =>
             <TouchableOpacity style={styles.cartel} key={index} onPress={()=> this.goInfo(movie)}>
               <ImageBackground source={{ uri: imglink + movie.poster_path }} style={styles.bgImage}>
-                <Image style={styles.imageColorGradient} source={require('./assets/Gradient_CyanUP.png')}/>
-              <View><Text style={styles.titleMovie}>{movie.original_title}</Text></View>
-                <View style={styles.listed}><Text style={styles.listedLines}>\\</Text></View>
+              <View><Text style={styles.titleSerie}>{movie.original_name}</Text></View>
                 {this.compareLikes(movie)}
+                <View style={styles.listed}><Text style={styles.listedLines}>//</Text></View>
+                <View style={styles.like}><Image source={require('./assets/Star_Active.png')} style={fav.styleStar} onPress={()=>this.changeFav}></Image></View>
               </ImageBackground>
             </TouchableOpacity>
                     )}
@@ -191,29 +198,13 @@ prevPage = () =>{
         </ScrollView>
       </View>
     );
-    }
   }
 }
 
 const styles = StyleSheet.create({
-  Loading:{
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    alignItems:'center',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'white',
-  }, 
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  imageColorGradient:{
-    zIndex: 5, 
-    position: 'absolute', 
-    bottom: 0, 
-    width: '100%',
+    backgroundColor: '#F5FCFF',
   },
   cargarMas: {
     color: 'black',
@@ -294,44 +285,29 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 5,
     justifyContent: 'flex-end',
+    backgroundColor: 'rgba(201,0,122,0.5)',
     zIndex: 2,
     position: 'absolute',
     bottom: -165,
     width: '100%',
-    zIndex: 6,
-    fontWeight: 'bold',
   },
   titleSerie: {
     color: 'white',
     padding: 5,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(221,0,162,0.5)',
+    backgroundColor: 'rgba(11,233,199,0.5)',
     zIndex: 2,
     position: 'absolute',
     bottom: -165,
     width: '100%',
   },
   listed: {
-    zIndex: 10, 
+    zIndex: 2, 
     position: 'absolute',
-    left: 80,
-    top:-60,
+    left: 103,
   },
   listedLines: {
-    color: 'rgba(11,233,199, 0.8)',
-    fontWeight: '900',
-    fontSize: 150,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    zIndex: 10,
-  },
-  nolistedLines: {
-    color: 'rgba(150,150,150,0.8)',
+    color: 'rgba(221,0,162,1)',
     fontWeight: '900',
     fontSize: 30,
     shadowColor: "#000",
@@ -341,7 +317,18 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    zIndex: 10,
+  },
+  nolistedLines: {
+    color: 'rgba(150,150,150,1)',
+    fontWeight: '900',
+    fontSize: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   like: {
     zIndex: 2, 
@@ -355,14 +342,19 @@ const styles = StyleSheet.create({
     height: 20,
   },
   nolikeStar: {
-    aspectRatio: 1,
-    zIndex: 3,
-    height: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   navBar: {
     justifyContent: 'space-between',
     alignItems: 'stretch',
-    backgroundColor: 'rgba(11,233,199, 1)',
+    backgroundColor: '#f711dc',
     flexDirection: 'row',
     shadowColor: "#000",
     shadowOffset: {
